@@ -5,20 +5,20 @@ SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION';
 
 -- -----------------------------------------------------
--- Schema game_storefront
+-- Schema game_platform
 -- -----------------------------------------------------
-DROP SCHEMA IF EXISTS `game_storefront` ;
+DROP SCHEMA IF EXISTS `game_platform` ;
 
 -- -----------------------------------------------------
--- Schema game_storefront
+-- Schema game_platform
 -- -----------------------------------------------------
-CREATE SCHEMA IF NOT EXISTS `game_storefront` DEFAULT CHARACTER SET utf8 ;
-USE `game_storefront` ;
+CREATE SCHEMA IF NOT EXISTS `game_platform` DEFAULT CHARACTER SET utf8 ;
+USE `game_platform` ;
 
 -- -----------------------------------------------------
--- Table `game_storefront`.`users`
+-- Table `game_platform`.`users`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `game_storefront`.`users` (
+CREATE TABLE IF NOT EXISTS `game_platform`.`users` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `username` VARCHAR(45) NULL,
   `email` VARCHAR(45) NULL,
@@ -30,9 +30,9 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `game_storefront`.`games`
+-- Table `game_platform`.`games`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `game_storefront`.`games` (
+CREATE TABLE IF NOT EXISTS `game_platform`.`games` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(45) NULL,
   `genre` VARCHAR(45) NULL,
@@ -46,9 +46,9 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `game_storefront`.`users_games`
+-- Table `game_platform`.`users_games`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `game_storefront`.`users_games` (
+CREATE TABLE IF NOT EXISTS `game_platform`.`users_games` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `users_id` INT NOT NULL,
   `games_id` INT NOT NULL,
@@ -60,21 +60,21 @@ CREATE TABLE IF NOT EXISTS `game_storefront`.`users_games` (
   INDEX `fk_users_has_games_users_idx` (`users_id` ASC) VISIBLE,
   CONSTRAINT `fk_users_has_games_users`
     FOREIGN KEY (`users_id`)
-    REFERENCES `game_storefront`.`users` (`id`)
+    REFERENCES `game_platform`.`users` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_users_has_games_games1`
     FOREIGN KEY (`games_id`)
-    REFERENCES `game_storefront`.`games` (`id`)
+    REFERENCES `game_platform`.`games` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `game_storefront`.`friends`
+-- Table `game_platform`.`friends`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `game_storefront`.`friends` (
+CREATE TABLE IF NOT EXISTS `game_platform`.`friends` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `user_id` INT NOT NULL,
   `friend_id` INT NOT NULL,
@@ -85,12 +85,12 @@ CREATE TABLE IF NOT EXISTS `game_storefront`.`friends` (
   INDEX `fk_table1_users2_idx` (`friend_id` ASC) VISIBLE,
   CONSTRAINT `fk_table1_users1`
     FOREIGN KEY (`user_id`)
-    REFERENCES `game_storefront`.`users` (`id`)
+    REFERENCES `game_platform`.`users` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_table1_users2`
     FOREIGN KEY (`friend_id`)
-    REFERENCES `game_storefront`.`users` (`id`)
+    REFERENCES `game_platform`.`users` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
