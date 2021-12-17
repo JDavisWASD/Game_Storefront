@@ -1,5 +1,5 @@
 from flask_app.config.mysqlconnection import connectToMySQL
-from flask_app.models.user import User
+from flask_app.models import user
 
 class Friends:
     DATABASE = 'game_platform'
@@ -27,7 +27,7 @@ class Friends:
                 'created_at': row['created_at'],
                 'updated_at': row['updated_at']
             }
-            friends.append(User(user_data))
+            friends.append(user.User(user_data))
 
         return friends
 
