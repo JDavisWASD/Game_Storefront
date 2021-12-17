@@ -1,4 +1,5 @@
 from flask_app.config.mysqlconnection import connectToMySQL
+from flask_app.models.user import User
 
 class Friends:
     DATABASE = 'game_platform'
@@ -13,11 +14,19 @@ class Friends:
 #Get functions -----------------------------------------------------------------
     @classmethod
     def get_all_by_user(cls, data):
-        query = 'SELECT * FROM friends WHERE user_id = %(user_id)s;'
+        query = 'SELECT * FROM friends JOIN users ON friend_id = users.id WHERE user_id = %(user_id)s;'
         results = connectToMySQL(cls.DATABASE).query_db(query, data)
         friends = []
-        for friend in results:
-            friends.apped(cls(friend))
+        for row in results:
+            user_data = {
+                'id': row['users.id'],
+                'username': row['username'],
+                'email': row['email'],
+                'password': row['password'],
+                'created_at': row['created_at'],
+                'updated_at': row['updated_at']
+            }
+            friends.append(User(user_data))
 
         return friends
 
