@@ -14,7 +14,8 @@ class Friends:
 #Get functions -----------------------------------------------------------------
     @classmethod
     def get_all_by_user(cls, data):
-        query = 'SELECT * FROM friends JOIN users ON friend_id = users.id WHERE user_id = %(user_id)s;'
+        query = 'SELECT * FROM friends JOIN users ON friend_id = users.id ' \
+            'WHERE user_id = %(user_id)s;'
         results = connectToMySQL(cls.DATABASE).query_db(query, data)
         friends = []
         for row in results:
