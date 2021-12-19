@@ -74,8 +74,9 @@ class UsersGame:
             print('Error: Status must be "owned" or "wishlist".')
             return False
 
-        query = 'UPDATE users_games SET status = %(status)s WHERE ' \
-            'user_id = %(user_id)s AND game_id = %(game_id)s;'
+        query = 'UPDATE users_games SET status = %(status)s, ' \
+            'updated_at = NOW() WHERE user_id = %(user_id)s AND ' \
+            'game_id = %(game_id)s;'
         connectToMySQL(cls.DATABASE).query_db(query, data)
 
     @classmethod
