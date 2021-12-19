@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Game Platform</title>
+</head>
+<body>
+    <!-- Navigation bar -->
+    <!-- 'Featured Games' section [Optional] -->
+    <!-- 'All Games' section [PL] -->
+    <!-- 'All Users' section [HS] -->
+    <div>
+        {% for user in all_users %}
+            <!-- User card -->
+            <div>
+                <img src="../static/images/user-circle.png" alt="user icon of {{ user.username }}">
+                <h4>{{ user.username }}</h4>
+                <a href="/add/friend/{{ user.id }}"></a>
+            </div>
+            <!-- Make some sort of conditional so that you cannot add yourself to your friends list -->
+        {% endfor %}
+    </div>
+
+    <!-- 'Collection' section [HS] -->
+    <!-- 'Wishlist' section [HS] -->
+    <!-- 'Friends' section [HS] -->
+</body>
+</html>

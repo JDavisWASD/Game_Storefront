@@ -36,7 +36,7 @@ def dashboard():
     return render_template('dashboard.html', all_users = user.User.get_all(), all_friends = friend.Friend.get_all_by_user(user_data), wishlist_games = users_game.UsersGame.get_users_games_by_status(wishlist_data), collection_games = users_game.UsersGame.get_users_games_by_status(collection_data))
 
 # --- Processes user's request to add another user to friends list ---
-@app.route('add/friend/<int:friend_id>')
+@app.route('/add/friend/<int:friend_id>')
 def add_friend(friend_id):
     data = {
         'user_id': session['user_id'],
@@ -48,14 +48,19 @@ def add_friend(friend_id):
     return redirect('/dashboard')
 
 # --- Processes user's request to add another user to friends list ---
+@app.route('/remove/friend/<int:friend_id>')
 def remove_friend(friend_id):
     data = {
         'user_id': session['user_id'],
         'friend_id': friend_id
     }
 
+    friend.Friend.delete(data)
+
+    return redirect('/dashboard')
+
 # --- Processes user's request to add game to collection or wishlist ---
-@app.route('add/<str:status>/game/<int:game_id>')
+@app.route('/add/<str:status>/game/<int:game_id>')
 def add_to_game_category(status, game_id):
     data = {
         'user_id': session['user_id'],
@@ -68,7 +73,7 @@ def add_to_game_category(status, game_id):
     return redirect('/dashboard')
 
 # --- Processes user's request to remove game from collection or wishlist ---
-@app.route('remove/<str:status>/game/<int:game_id>')
+@app.route('/remove/<str:status>/game/<int:game_id>')
 def remove_from_game_category(status, game_id):
     data = {
         'user_id': session['user_id'],
