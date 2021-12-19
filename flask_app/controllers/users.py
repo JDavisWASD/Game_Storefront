@@ -48,11 +48,16 @@ def add_friend(friend_id):
     return redirect('/dashboard')
 
 # --- Processes user's request to add another user to friends list ---
+@app.route('/remove/friend/<int:friend_id>')
 def remove_friend(friend_id):
     data = {
         'user_id': session['user_id'],
         'friend_id': friend_id
     }
+
+    friend.Friend.delete(data)
+
+    return redirect('/dashboard')
 
 # --- Processes user's request to add game to collection or wishlist ---
 @app.route('/add/<str:status>/game/<int:game_id>')
