@@ -47,12 +47,16 @@ def add_friend(friend_id):
 
     return redirect('/dashboard')
 
-# --- Processes user's request to add another user to friends list ---
+# --- Processes user's request to add another user to friends list UPDATED BY SEAN, was missing function and return---
 def remove_friend(friend_id):
     data = {
         'user_id': session['user_id'],
         'friend_id': friend_id
     }
+
+    friend.Friend.save(data)
+
+    return redirect('/dashboard')
 
 # --- Processes user's request to add game to collection or wishlist ---
 @app.route('add/<str:status>/game/<int:game_id>')
@@ -79,3 +83,16 @@ def remove_from_game_category(status, game_id):
     users_game.UsersGame.delete(data)
 
     return redirect('/dashboard')
+
+# --- Processes user's request to view specific game ADDED by SEAN---
+@app.route('/view/<str:status>/game/<int:game_id>')
+def show_game(status, game_id)
+    data ={
+        'user_id' : session['user_id'],
+        'game_id' : game_id,
+        'status' : status
+    }
+
+    game.get_by_id(data)
+
+    return render_template('showgame.html')
