@@ -34,6 +34,18 @@ class User:
 
         return False
 
+    @classmethod
+    def get_all(cls):
+        query = 'SELECT * FROM users;'
+        results = connectToMySQL(cls.DATABASE).query_db(query)
+
+        users = []
+        
+        for user in results:
+            users.append(cls(user))
+        
+        return users    # 'users' is a list of User objects
+
 #Modify functions --------------------------------------------------------------
     @classmethod
     def save(cls, data):
