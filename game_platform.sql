@@ -50,21 +50,21 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `game_platform`.`users_games` (
   `id` INT NOT NULL AUTO_INCREMENT,
-  `users_id` INT NOT NULL,
-  `games_id` INT NOT NULL,
+  `user_id` INT NOT NULL,
+  `game_id` INT NOT NULL,
   `status` VARCHAR(8) NULL,
   `created_at` DATETIME NULL,
   `updated_at` DATETIME NULL,
-  PRIMARY KEY (`id`, `users_id`, `games_id`),
-  INDEX `fk_users_has_games_games1_idx` (`games_id` ASC) VISIBLE,
-  INDEX `fk_users_has_games_users_idx` (`users_id` ASC) VISIBLE,
+  PRIMARY KEY (`id`, `user_id`, `game_id`),
+  INDEX `fk_users_has_games_games1_idx` (`game_id` ASC) VISIBLE,
+  INDEX `fk_users_has_games_users_idx` (`user_id` ASC) VISIBLE,
   CONSTRAINT `fk_users_has_games_users`
-    FOREIGN KEY (`users_id`)
+    FOREIGN KEY (`user_id`)
     REFERENCES `game_platform`.`users` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_users_has_games_games1`
-    FOREIGN KEY (`games_id`)
+    FOREIGN KEY (`game_id`)
     REFERENCES `game_platform`.`games` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
@@ -99,6 +99,7 @@ ENGINE = InnoDB;
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
+
 
 INSERT INTO games (name, genre, release_date, price, description, created_at, updated_at)
 VALUES ("Forza Horizon 5", "Racing", "2021-11-04", 59.99, "Your Ultimate Horizon Adventure awaits! Explore the vibrant and ever-evolving open world landscapes of Mexico with limitless, fun driving action in hundreds of the world’s greatest cars.", NOW(), NOW());
