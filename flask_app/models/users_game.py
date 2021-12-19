@@ -1,5 +1,6 @@
 from flask_app.config.mysqlconnection import connectToMySQL
 from flask_app.models import game
+from flask_app.models import user
 
 class UsersGame:
     DATABASE = 'game_platform'
@@ -14,7 +15,7 @@ class UsersGame:
 
 #Get functions -----------------------------------------------------------------
     @classmethod
-    def get_users_games(cls, data):
+    def get_users_games_by_status(cls, data):
         query = 'SELECT * FROM users_games JOIN games on game_id = games.id ' \
             'WHERE user_id = %(user_id)s AND status = %(status)s;'
         results = connectToMySQL(cls.DATABASE).query_db(query, data)
@@ -33,6 +34,25 @@ class UsersGame:
             games.append(game.Game(game_data))
 
         return games
+
+    @classmethod
+    def get_users_by_game(cls, data):
+        query = 'SELECT * FROM users_games JOIN users on user_id = users.id ' \
+            'WHERE game_id = %(game_id)s;'
+        results = connectToMySQL(cls.DATABASE).query_db(query, data)
+        users = []
+        for row in results:
+            user_data = {
+                'id': row['users.id'],
+                'username': row['username'],
+                'email': row['email'],
+                'password': row['password'],
+                'created_at': row['users.created_at'],
+                'updated_at': row['users.updated_at']
+            }
+            users.append(user.User(user_data))
+
+        return users
 
 #Modify functions --------------------------------------------------------------
     @classmethod
