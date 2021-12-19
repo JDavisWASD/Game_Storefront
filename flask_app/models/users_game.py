@@ -33,7 +33,7 @@ class UsersGame:
             }
             games.append(game.Game(game_data))
 
-        return games
+        return games    # returns a list called 'games'
 
     @classmethod
     def get_users_by_game(cls, data):
@@ -52,7 +52,7 @@ class UsersGame:
             }
             users.append(user.User(user_data))
 
-        return users
+        return users    # returns a list called 'users'
 
 #Modify functions --------------------------------------------------------------
     @classmethod
@@ -82,5 +82,5 @@ class UsersGame:
     @classmethod
     def delete(cls, data):
         query = 'DELETE FROM users_games WHERE user_id = %(user_id)s AND ' \
-            'game_id = %(game_id)s;'
+            'game_id = %(game_id)s AND status = %(status)s;'
         connectToMySQL(cls.DATABASE).query_db(query, data)
