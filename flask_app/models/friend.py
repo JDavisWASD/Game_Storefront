@@ -41,6 +41,27 @@ class Friend:
 
         return False
 
+    @classmethod
+    def get_friends_games(cls, data):
+        query = 'SELECT * FROM friends JOIN users ON users.id = friend_id ' \
+            'JOIN users_games ON users_games.user_id = friend_id WHERE ' \
+            'friends.user_id = %(user_id)s AND game_id = %(game_id)s AND ' \
+            'status = %(status)s;'
+        results = connectToMySQL(cls.DATABASE).query_db(query, data)
+        friends = []
+        for row in results:
+            user_data = {
+                'id': row['users.id'],
+                'username': row['username'],
+                'email': row['email'],
+                'password': row['password'],
+                'created_at': row['users.created_at'],
+                'updated_at': row['users.updated_at']
+            }
+            friends.append(user.User(user_data))
+
+        return friends
+
 #Modify functions --------------------------------------------------------------
     @classmethod
     def save(cls, data):
