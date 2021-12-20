@@ -4,14 +4,17 @@ from flask_app.models import user, game, friend, users_game
 from flask_bcrypt import Bcrypt
 bcrypt = Bcrypt(app)
 
+# --- Landing page - includes login ---
 @app.route('/')
 def index():
     return render_template('index.html')
 
+# --- Register page ---
 @app.route('/new')
 def registeraccount():
     return render_template('register.html')
 
+# --- Processes user input to create a new user
 @app.route('/new/register',methods=['POST'])
 def register():
     if not user.User.validate_new_user(request.form):
@@ -26,6 +29,7 @@ def register():
 
     return redirect('/dashboard')
 
+# --- Processes login info ---
 @app.route('/login',methods=['POST'])
 def login():
     found_user = user.User.get_by_email(request.form)
@@ -45,12 +49,6 @@ def dashboard():
     if 'user_id' not in session:
         return redirect('/login')
 
-    # display all games stored in database [PL]
-        # from list of all games: can add/remove games to/from user's collection [HS]
-        # from list of all games: can add/remove games to/from user's wishlist [HS]
-
-    # display all games in user's wishlist and collection - via 'wishlist_games' and 'collection_games' [HS]
-
     user_data = {
         'user_id': session['user_id']
     }
@@ -65,14 +63,7 @@ def dashboard():
         'status': "collection"
     }
 
-    # display all users - via 'all_users' [HS]
-        # from list of all users: can add others to user's friend list - via 'add_friend' route
-
-    # friends list
-        # display all friends - via 'all_friends' [HS]
-        # can remove others from user's friend list - via 'remove_friend' route [HS]
-
-    return render_template('dashboard.html', all_users = user.User.get_all(), all_friends = friend.Friend.get_all_by_user(user_data), wishlist_games = users_game.UsersGame.get_users_games_by_status(wishlist_data), collection_games = users_game.UsersGame.get_users_games_by_status(collection_data), user = user.User.get_by_id(user_data))
+    return render_template('dashboard.html', self_user = user.User.get_by_id(user_data), all_games = game.Game.get_all(), all_users = user.User.get_all(), all_friends = friend.Friend.get_all_by_user(user_data), wishlist_games = users_game.UsersGame.get_users_games_by_status(wishlist_data), collection_games = users_game.UsersGame.get_users_games_by_status(collection_data))
 
 # --- Processes user's request to add another user to friends list ---
 @app.route('/add/friend/<int:friend_id>')
@@ -124,6 +115,7 @@ def remove_from_game_category(status, game_id):
 
     return redirect('/dashboard')
 
+# --- Edit account settings page
 @app.route('/edit')
 def edit_user():
     if 'user_id' not in session:
