@@ -8,23 +8,92 @@
 </head>
 <body>
     <!-- Navigation bar -->
+    <div>
+        <h1>Game Platform</h1>
+        <!-- container for nav links -->
+        <div>
+            <p><a href="/dashboard">Home</a></p>
+            <p><a href="/logout">Log Out</a></p>
+        </div>
+        <div>
+            <h4>{{ self_user.username }}</h4>
+            <!-- placeholder for link to 'Account Settings' page -->
+            <img src="../static/images/user-circle.png" alt="{{ self_user.username }}'s user icon">
+        </div>
+    </div>
+
     <!-- 'Featured Games' section [Optional] -->
+
     <!-- 'All Games' section [PL] -->
+    <div>
+        {% for game in all_games %}
+            <!-- Game card -->
+            <div>
+                <p>[ image placeholder ]</p>
+                <p><a href="/view/{{ game.id }}">{{ game.name }}</a></p>
+            </div>
+        {% endfor %}
+    </div>
+
     <!-- 'All Users' section [HS] -->
     <div>
         {% for user in all_users %}
             <!-- User card -->
             <div>
-                <img src="../static/images/user-circle.png" alt="user icon of {{ user.username }}">
+                <img src="../static/images/user-circle.png" alt="{{ user.username }}'s user icon">
                 <h4>{{ user.username }}</h4>
-                <a href="/add/friend/{{ user.id }}"></a>
+                {% if user.id != self_user.id %}    {# makes sure we cannot add ourselves to friends list #}
+                    <a href="/add/friend/{{ user.id }}">Add</a>
+                {% endif %}
             </div>
-            <!-- Make some sort of conditional so that you cannot add yourself to your friends list -->
         {% endfor %}
     </div>
 
     <!-- 'Collection' section [HS] -->
+    <div>
+        {% for game_owned in collection_games %}
+            <div>   <!-- row for each game in collections -->
+                <div>   <!-- container to hold image and game title -->
+                    <!-- image placeholder -->
+                    {{ game_owned.name }}</p>
+                </div>
+                <!-- container for view/remove buttons -->
+                <div>
+                    <!-- 'view' link is a placeholder, may need to change later-->
+                    <button><a href="/view/game/{{ game_owned.id }}">View</a></button>
+                    <button><a href="/remove/collection/game/{{ game_owned.id }}">Remove</a></button>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+
     <!-- 'Wishlist' section [HS] -->
+    <div>
+        {% for game_wanted in wishlist_games %}
+            <div>   <!-- row for each game in wishlist -->
+                <div>   <!-- container to hold image and game title -->
+                    <!-- image placeholder -->
+                    <p>{{ game_wanted.name }}</p>
+                </div>
+                <!-- container for view/remove buttons -->
+                <div>
+                    <!-- 'view' link is a placeholder, may need to change later-->
+                    <button><a href="/view/game/{{ game_wanted.id }}">View</a></button>
+                    <button><a href="/remove/collection/game/{{ game_wanted.id }}">Remove</a></button>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+
     <!-- 'Friends' section [HS] -->
+    <div>
+        {% for friend in all_friends %}
+            <div> <!-- row for each user in friends list -->
+                <img src="../static/images/user-circle.png" alt=" {{ friend.username }}'s user icon">
+                <p>{{ friend.username }}</p>
+            </div>
+            <button><a href="/remove/friend/{{ friend.id }}"></a></button>
+        {% endfor %}
+    </div>
 </body>
 </html>
