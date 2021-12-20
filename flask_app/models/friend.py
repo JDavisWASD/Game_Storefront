@@ -67,7 +67,7 @@ class Friend:
     def save(cls, data):
         query = 'INSERT INTO friends (user_id, friend_id, created_at, ' \
             'updated_at) VALUES (%(user_id)s, %(friend_id)s, NOW(), NOW());'
-        return connectToMySQL(cls.DATABASE).query_db(query, data)
+        connectToMySQL(cls.DATABASE).query_db(query, data)
 
     @classmethod
     def delete(cls, data):

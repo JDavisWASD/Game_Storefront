@@ -65,7 +65,7 @@ class UsersGame:
         query = 'INSERT INTO users_games (user_id, game_id, status, ' \
             'created_at, updated_at) VALUES (%(user_id)s, %(game_id)s, ' \
             '%(status)s, NOW(), NOW());'
-        return connectToMySQL(cls.DATABASE).query_db(query, data)
+        connectToMySQL(cls.DATABASE).query_db(query, data)
 
     @classmethod
     def update(cls, data):
