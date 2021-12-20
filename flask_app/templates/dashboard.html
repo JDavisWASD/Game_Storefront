@@ -1,26 +1,24 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <title>Game Platform</title>
 </head>
-<body>
-    <!-- Navigation bar -->
-    <div>
-        <h1>Game Platform</h1>
-        <!-- container for nav links -->
-        <div>
-            <p><a href="/dashboard">Home</a></p>
-            <p><a href="/logout">Log Out</a></p>
+<body style="background-color:lightgray">
+    <nav class="d-flex justify-content-between align-items-center col-12">
+        <h1 class="text-center">Game Platform</h1>
+        <h2>Welcome, {{self_user.username}}</h2>
+        <div class="d-flex col-4 justify-content-around">
+            <a href="/dashboard">Home</a>
+            <a href="/edit" class="btn btn-info">Edit profile</a>
+            <a href="/logout" class="btn btn-info">Logout</a>
         </div>
-        <div>
-            <h4>{{ self_user.username }}</h4>
-            <!-- placeholder for link to 'Account Settings' page -->
-            <img src="../static/images/user-circle.png" alt="{{ self_user.username }}'s user icon">
-        </div>
-    </div>
+    </nav>
 
     <!-- 'Featured Games' section [Optional] -->
 
@@ -36,7 +34,8 @@
     </div>
 
     <!-- 'All Users' section [HS] -->
-    <div>
+    <div class="col-2 mx-auto" style="background-color:darkkhaki">
+        <h2>Users:</h2>
         {% for user in all_users %}
             <!-- User card -->
             <div>
@@ -48,7 +47,6 @@
             </div>
         {% endfor %}
     </div>
-
     <!-- 'Collection' section [HS] -->
     <div>
         {% for game_owned in collection_games %}
@@ -96,4 +94,5 @@
         {% endfor %}
     </div>
 </body>
+
 </html>
