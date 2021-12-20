@@ -1,7 +1,43 @@
-from flask import render_template, redirect, request, session
+from flask import flash, redirect, render_template, request, session
 from flask_app import app
 from flask_app.models import user, game, friend, users_game
+from flask_bcrypt import Bcrypt
+bcrypt = Bcrypt(app)
 
+@app.route('/')
+def index():
+    return render_template('index.html')
+
+@app.route('/new')
+def registeraccount():
+    return render_template('register.html')
+
+@app.route('/new/register',methods=['POST'])
+def register():
+    if not user.User.validate_new_user(request.form):
+        return redirect('/new')
+    data ={ 
+        "username": request.form['username'],
+        "email": request.form['email'],
+        "password": bcrypt.generate_password_hash(request.form['password'])
+    }
+    id = user.User.save(data)
+    session['user_id'] = id
+
+    return redirect('/dashboard')
+
+@app.route('/login',methods=['POST'])
+def login():
+    found_user = user.User.get_by_email(request.form)
+
+    if not found_user:
+        flash("Invalid Email","login")
+        return redirect('/')
+    if not bcrypt.check_password_hash(found_user.password, request.form['password']):
+        flash("Invalid Password","login")
+        return redirect('/')
+    session['user_id'] = found_user.id
+    return redirect('/dashboard')
 
 # --- Dashboard ---
 @app.route('/dashboard')
@@ -88,25 +124,28 @@ def remove_from_game_category(status, game_id):
 
     return redirect('/dashboard')
 
-@app.route('/logout')
-def logout():
-    session.pop('user_id')
-    return redirect('/login')
-
 @app.route('/edit')
-def edit_username():
+def edit_user():
     if 'user_id' not in session:
         return redirect('/login')
 
     data = {'user_id': session['user_id']}
-    user_data = user.User.get_by_id(data)
-    return render_template('edit.html', user = user_data)
+    return render_template('edit.html', user = user.User.get_by_id(data))
 
-@app.route('/update_username')
-def update_username():
+@app.route('/update_user', methods = ['POST'])
+def update_user():
     data = {
         'user_id': session['user_id'],
-        'username': request.form
+        'username': request.form['username'],
+        'email': request.form['email']
     }
+
+    #TODO: Validate email and username
+
     user.User.update(data)
     return redirect('/dashboard')
+
+@app.route('/logout')
+def logout():
+    session.pop('user_id')
+    return redirect('/login')

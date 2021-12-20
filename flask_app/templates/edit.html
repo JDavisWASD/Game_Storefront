@@ -5,29 +5,49 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <title>Game Platform</title>
 </head>
 
-<body>
-    <div>
-        <div>
-            <h1>Game Platform</h1>
-            <a href="/dashboard">Home</a>
-            <a href="/logout">Log Out</a>
+<body style="background-color:lightgray">
+    <nav class="d-flex justify-content-between align-items-center col-12">
+        <h1 class="text-center">Game Platform</h1>
+        <div class="d-flex col-6 justify-content-around">
+            <a href="/dashboard" class="btn btn-primary">Dashboard</a>
+            <a href="/logout" class="btn btn-info">Logout</a>
         </div>
-        <div>
-            <p>{{ user.username }}</p>
-            <img src="../static/images/user-circle.png" alt="user icon of {{ user.username }}">
-        </div>
-    </div>
+    </nav>
     <div>
         <h2>Account Settings</h2>
         <img src="../static/images/user-circle.png" alt="user icon of {{ user.username }}">
         <h3>{{ user.username }}</h3>
-        <form action="/update_username" method="POST">
-            <label for="username">Username:</label>
-            <input type="text" name="username">
-            <input type="submit" value="Update">
+        <form action="/update_user" method="POST" class="col-11 p-4 my-4 mx-auto">
+            {% with messages = get_flashed_messages(category_filter=['user']) %}
+            {% if messages %}
+            <div class="alert" role="alert">
+                <strong>alert</strong>
+                {% for message in messages %}
+                    <p>{{message}}</p>
+                {% endfor %}
+            </div>
+            {% endif %}
+            {% endwith %}
+
+            <div class="d-flex justify-content-between col-50">
+                <div class="col-50">
+                    <div class="form-group">
+                        <label for="username">Username:</label>
+                        <input type="text" name="username" placeholder="{{ user.username }}">
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email:</label>
+                        <input type="text" name="email" placeholder="{{ user.email }}">
+                    </div>
+                    <br>
+                    <input type="submit" value="Update" class="btn btn-primary">
+                </div>
+            </div>
         </form>
     </div>
 </body>

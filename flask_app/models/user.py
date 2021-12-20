@@ -56,8 +56,8 @@ class User:
 
     @classmethod
     def update(cls, data):
-        query = 'UPDATE users SET username = %(username)s, updated_at = NOW() '\
-            'WHERE id = %(user_id)s;'
+        query = 'UPDATE users SET username = %(username)s, email = %(email)s, '\
+            'updated_at = NOW() WHERE id = %(user_id)s;'
         connectToMySQL(cls.DATABASE).query_db(query, data)
 
 #Helper functions --------------------------------------------------------------
