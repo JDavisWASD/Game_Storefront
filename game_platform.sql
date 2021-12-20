@@ -49,13 +49,12 @@ ENGINE = InnoDB;
 -- Table `game_platform`.`users_games`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `game_platform`.`users_games` (
-  `id` INT NOT NULL AUTO_INCREMENT,
   `user_id` INT NOT NULL,
   `game_id` INT NOT NULL,
-  `status` VARCHAR(8) NULL,
+  `status` VARCHAR(10) NULL,
   `created_at` DATETIME NULL,
   `updated_at` DATETIME NULL,
-  PRIMARY KEY (`id`, `user_id`, `game_id`),
+  PRIMARY KEY (`user_id`, `game_id`),
   INDEX `fk_users_has_games_games1_idx` (`game_id` ASC) VISIBLE,
   INDEX `fk_users_has_games_users_idx` (`user_id` ASC) VISIBLE,
   CONSTRAINT `fk_users_has_games_users`
@@ -75,12 +74,11 @@ ENGINE = InnoDB;
 -- Table `game_platform`.`friends`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `game_platform`.`friends` (
-  `id` INT NOT NULL AUTO_INCREMENT,
   `user_id` INT NOT NULL,
   `friend_id` INT NOT NULL,
   `created_at` DATETIME NULL,
   `updated_at` DATETIME NULL,
-  PRIMARY KEY (`id`, `user_id`, `friend_id`),
+  PRIMARY KEY (`user_id`, `friend_id`),
   INDEX `fk_table1_users1_idx` (`user_id` ASC) VISIBLE,
   INDEX `fk_table1_users2_idx` (`friend_id` ASC) VISIBLE,
   CONSTRAINT `fk_table1_users1`
