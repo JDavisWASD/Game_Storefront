@@ -6,6 +6,9 @@ from flask_app.models import user, game, friend, users_game
 # --- Dashboard ---
 @app.route('/dashboard')
 def dashboard():
+    if 'user_id' not in session:
+        return redirect('/login')
+
     # display all games stored in database [PL]
         # from list of all games: can add/remove games to/from user's collection [HS]
         # from list of all games: can add/remove games to/from user's wishlist [HS]
@@ -60,7 +63,7 @@ def remove_friend(friend_id):
     return redirect('/dashboard')
 
 # --- Processes user's request to add game to collection or wishlist ---
-@app.route('/add/<str:status>/game/<int:game_id>')
+@app.route('/add/<status>/game/<int:game_id>')
 def add_to_game_category(status, game_id):
     data = {
         'user_id': session['user_id'],
@@ -73,7 +76,7 @@ def add_to_game_category(status, game_id):
     return redirect('/dashboard')
 
 # --- Processes user's request to remove game from collection or wishlist ---
-@app.route('/remove/<str:status>/game/<int:game_id>')
+@app.route('/remove/<status>/game/<int:game_id>')
 def remove_from_game_category(status, game_id):
     data = {
         'user_id': session['user_id'],
@@ -84,3 +87,8 @@ def remove_from_game_category(status, game_id):
     users_game.UsersGame.delete(data)
 
     return redirect('/dashboard')
+
+@app.route('/logout')
+def logout():
+    session.pop('user_id')
+    return redirect('/login')
