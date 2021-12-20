@@ -47,7 +47,7 @@ def login():
 @app.route('/dashboard')
 def dashboard():
     if 'user_id' not in session:
-        return redirect('/login')
+        return redirect('/')
 
     user_data = {
         'user_id': session['user_id']
@@ -119,7 +119,7 @@ def remove_from_game_category(status, game_id):
 @app.route('/edit')
 def edit_user():
     if 'user_id' not in session:
-        return redirect('/login')
+        return redirect('/')
 
     data = {'user_id': session['user_id']}
     return render_template('edit.html', user = user.User.get_by_id(data))
@@ -140,4 +140,4 @@ def update_user():
 @app.route('/logout')
 def logout():
     session.pop('user_id')
-    return redirect('/login')
+    return redirect('/')
