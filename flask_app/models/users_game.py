@@ -9,7 +9,7 @@ class UsersGame:
         self.id = data['id']
         self.user_id = data['user_id']
         self.game_id = data['game_id']
-        self.status = data['status']    #'owned' or 'wishlist' only
+        self.status = data['status']    #'collection' or 'wishlist' only
         self.created_at = data['created_at']
         self.updated_at = data['updated_at']
 
@@ -57,9 +57,9 @@ class UsersGame:
 #Modify functions --------------------------------------------------------------
     @classmethod
     def save(cls, data):
-        if data['status'].lower() != 'owned' and \
+        if data['status'].lower() != 'collection' and \
                 data['status'].lower() != 'wishlist':
-            print('Error: Status must be "owned" or "wishlist".')
+            print('Error: Status must be "collection" or "wishlist".')
             return False
 
         query = 'INSERT INTO users_games (user_id, game_id, status, ' \
@@ -69,9 +69,9 @@ class UsersGame:
 
     @classmethod
     def update(cls, data):
-        if data['status'].lower() != 'owned' and \
+        if data['status'].lower() != 'collection' and \
                 data['status'].lower() != 'wishlist':
-            print('Error: Status must be "owned" or "wishlist".')
+            print('Error: Status must be "collection" or "wishlist".')
             return False
 
         query = 'UPDATE users_games SET status = %(status)s, ' \
