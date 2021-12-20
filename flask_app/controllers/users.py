@@ -72,7 +72,7 @@ def dashboard():
         # display all friends - via 'all_friends' [HS]
         # can remove others from user's friend list - via 'remove_friend' route [HS]
 
-    return render_template('dashboard.html', all_users = user.User.get_all(), all_friends = friend.Friend.get_all_by_user(user_data), wishlist_games = users_game.UsersGame.get_users_games_by_status(wishlist_data), collection_games = users_game.UsersGame.get_users_games_by_status(collection_data))
+    return render_template('dashboard.html', all_users = user.User.get_all(), all_friends = friend.Friend.get_all_by_user(user_data), wishlist_games = users_game.UsersGame.get_users_games_by_status(wishlist_data), collection_games = users_game.UsersGame.get_users_games_by_status(collection_data), user = user.User.get_by_id(user_data))
 
 # --- Processes user's request to add another user to friends list ---
 @app.route('/add/friend/<int:friend_id>')
