@@ -1,4 +1,4 @@
-from flask import render_template, redirect, session
+from flask import render_template, redirect, request, session
 from flask_app import app
 from flask_app.models import user, game, friend, users_game
 
@@ -92,3 +92,21 @@ def remove_from_game_category(status, game_id):
 def logout():
     session.pop('user_id')
     return redirect('/login')
+
+@app.route('/edit')
+def edit_username():
+    if 'user_id' not in session:
+        return redirect('/login')
+
+    data = {'user_id': session['user_id']}
+    user_data = user.User.get_by_id(data)
+    return render_template('edit.html', user = user_data)
+
+@app.route('/update_username')
+def update_username():
+    data = {
+        'user_id': session['user_id'],
+        'username': request.form
+    }
+    user.User.update(data)
+    return redirect('/dashboard')

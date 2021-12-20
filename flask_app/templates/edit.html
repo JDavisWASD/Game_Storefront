@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Game Platform</title>
+</head>
+
+<body>
+    <div>
+        <div>
+            <h1>Game Platform</h1>
+            <a href="/dashboard">Home</a>
+            <a href="/logout">Log Out</a>
+        </div>
+        <div>
+            <p>{{ user.username }}</p>
+            <img src="../static/images/user-circle.png" alt="user icon of {{ user.username }}">
+        </div>
+    </div>
+    <div>
+        <h2>Account Settings</h2>
+        <img src="../static/images/user-circle.png" alt="user icon of {{ user.username }}">
+        <h3>{{ user.username }}</h3>
+        <form action="/update_username" method="POST">
+            <label for="username">Username:</label>
+            <input type="text" name="username">
+            <input type="submit" value="Update">
+        </form>
+    </div>
+</body>
+
+</html>
