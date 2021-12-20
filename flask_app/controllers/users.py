@@ -134,14 +134,13 @@ def edit_user():
 
 @app.route('/update_user', methods = ['POST'])
 def update_user():
+    if not user.User.validate_update(request.form):
+        return redirect('/edit')
     data = {
         'user_id': session['user_id'],
         'username': request.form['username'],
         'email': request.form['email']
     }
-
-    #TODO: Validate email and username
-
     user.User.update(data)
     return redirect('/dashboard')
 
