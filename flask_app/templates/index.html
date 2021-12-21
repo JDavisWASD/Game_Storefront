@@ -5,15 +5,21 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
         integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <title>Game Platform</title>
 </head>
 
 <body style="background-color:lightgray">
+    <nav class="d-flex justify-content-between align-items-center col-12 bg-faded-purple">
+        <h1>Game Platform</h1>
+        <a href="/new" class="btn btn-info">Sign Up</a>
+    </nav>
+
     <div>
         <form action="/login" method="post" class="col-4 p-4 mx-auto">
-            <h2 class="text-success">Login</h2>
+            <h2 class="text-center">Login</h2>
             {% with messages = get_flashed_messages(category_filter=['login']) %}
             {% if messages %}
             <div class="alert alert-danger" role="alert">
@@ -32,14 +38,9 @@
                 <label for="password">Password:</label>
                 <input type="password" name="password" class="form-control">
             </div>
-
-            <input type="submit" value="Login" class="btn btn-success">
-            <div>
-                <a href="/new">Click here to register</a>
-            </div>
+            <input type="submit" value="Login" class="btn btn-warning float-right">
+            <a href="/new">Click here to register</a>
         </form>
-
-        
     </div>
 </body>
 

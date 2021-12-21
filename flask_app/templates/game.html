@@ -7,63 +7,58 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
         integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
     <title>Game Platform</title>
 </head>
 
 <body>
-    <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='/css/bootstrap.css') }}">
-</head>
-<body>
     <!-- navbar -->
-    <nav class="d-flex justify-content-around align-items-center bg-dark">
-        <div class="text-warning">
+    <nav class="d-flex justify-content-between align-items-center col-12 bg-faded-purple">
+        <div class="d-flex justify-content-around align-items-center">
             <h1>Game Platform</h1>
+            <a href="/dashboard" class="btn btn-info mx-2">Home</a>
+            <a href="/logout" class="btn btn-info">Log Out</a>
         </div>
-        <h4 class="text-center text-warning">Welcome {{ self_user.username|title }}!</h4>
-            <div class="d-flex justify-content-around btn-group-vertical">
-            <div class="d-flex align-items-center justify-content-around">
-                <a href="/dashboard" class="btn btn-primary">Home</a>
-                <a href="/edit" class="btn btn-primary">Edit profile</a>
-                <a href="/logout" class="btn btn-info">Logout</a>
-            </div>
-        </div>    
+        <div class="d-flex justify-content-around align-items-center">
+            <h3>{{ self_user.username }}</h3>
+            <img src="{{ url_for('static', filename = 'images/user-circle.png') }}" alt="user icon of {{ self_user.username }}"
+                class="user-icon mx-2">
+        </div>
     </nav>
     <!-- game body -->
     <!-- price/add collection/add wishlist-->
     <div class="container d-flex justify-content-between align-items-center btn-group-vertical">
         <div class="row flex-nowrap m-3 overflow-auto">
-                <!-- Game card -->
-                <div class="col-24">
-                    <div class="card">
-                        <img src="{{ url_for('static', filename = 'images/' + game.image_source) }}" class="card-img-top" alt="{{ game.name }}">  <!-- Image placeholder -->
-                    </div>
+            <!-- Game card -->
+            <div class="col-24">
+                <div class="card">
+                    <img src="{{ url_for('static', filename = 'images/' + game.image_source) }}" class="card-img-top"
+                        alt="{{ game.name }}"> <!-- Image placeholder -->
                 </div>
+            </div>
         </div>
         <div>
             <p class="">Price: {{ game.price }}</p>
         </div>
         <div>
-            {% if status_games|length == 0 %} <!-- if array is empty -->
+            {% if status_games|length == 0 %}
+                <!-- if array is empty -->
                 <button class="btn text-light">
-                    <a href = "/add/collection/game/{{game.id}}">Add to your collection!</a>
+                    <a href="/add/collection/game/{{game.id}}">Add to your collection!</a>
                 </button>
-            {% else %} <!-- if user wants to put wishlisted game in collection, update status from wishlist to collection-->
-                    {% for c in status_games%}
-                        {% if (c.status != "collection") and (c.status == "wishlist") %} <!-- game is not in user's collection and is on wishlist -->
-                            <button class="btn text-light">
-                                <a href = "/update/collection/game/{{game.id}}">Add to your collection!</a>
-                            </button>
-                        {% else %} <!-- user has game in collection-->
-                            <p>You own this game.</p>
-                        {% endif %}
-                    {% endfor %}
+            {% else %}
+                <!-- if user wants to put wishlisted game in collection, update status from wishlist to collection-->
+                {% for c in status_games%}
+                    {% if (c.status != "collection") and (c.status == "wishlist") %}
+                        <!-- game is not in user's collection and is on wishlist -->
+                        <button class="btn text-light">
+                            <a href="/update/collection/game/{{game.id}}">Add to your collection!</a>
+                        </button>
+                    {% else %}
+                        <!-- user has game in collection-->
+                        <p>You own this game.</p>
+                    {% endif %}
+                {% endfor %}
             {% endif %}
         </div>
         <div>
@@ -72,18 +67,18 @@
                     <a href="/add/wishlist/game/{{game.id}}">Add to wishlist</a>
                 </button>
             {% else %}
-                    {% for c in status_games%}
-                        {% if (c.status == "wishlist") and (c.status != "collection") %}
-                            <button class="btn text-light">
-                                <a href="/remove/wishlist/game/{{game.id}}">Remove from Wishlist</a>
-                            </button> 
-                        {% elif (c.status != "wishlist") and (c.status == "collection") %}
-                        {% else %}
-                            <button class="btn text-light">
-                                <a href="/add/wishlist/game/{{game.id}}">Add from Wishlist</a>
-                            </button> 
-                        {% endif %}
-                    {% endfor %}
+                {% for c in status_games%}
+                    {% if (c.status == "wishlist") and (c.status != "collection") %}
+                        <button class="btn text-light">
+                            <a href="/remove/wishlist/game/{{game.id}}">Remove from Wishlist</a>
+                        </button>
+                    {% elif (c.status != "wishlist") and (c.status == "collection") %}
+                    {% else %}
+                        <button class="btn text-light">
+                            <a href="/add/wishlist/game/{{game.id}}">Add from Wishlist</a>
+                        </button>
+                    {% endif %}
+                {% endfor %}
             {% endif %}
         </div>
     </div>
@@ -107,25 +102,21 @@
     <div class="d-flex justify-content-around bg-dark">
         <div class="bg-light">
             {% for f in friends_collection %}
-            <h4> friend(s) own this.</h4>
-            <tr class="font-weight-bold">
-                <td class="text-uppercase">{{f.first_name}}</td>
-                </td>
-            </tr>
-        {% endfor %}
+                <h4> friend(s) own this.</h4>
+                <tr class="font-weight-bold">
+                    <td class="text-uppercase">{{f.first_name}}</td>
+                </tr>
+            {% endfor %}
         </div>
         <div>
             {% for f in friends %}
                 <h4> friend(s) own this.</h4>
                 <tr class="font-weight-bold">
                     <td class="text-uppercase">{{f.first_name}}</td>
-                    </td>
                 </tr>
             {% endfor %}
         </div>
     </div>
-</body>
-</html>
 </body>
 
 </html>

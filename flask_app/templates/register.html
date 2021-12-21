@@ -5,23 +5,29 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Game Platform</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
         integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <title>Game Platform</title>
 </head>
 
 <body style="background-color:lightgray">
+    <nav class="d-flex justify-content-between align-items-center col-12 bg-faded-purple">
+        <h1>Game Platform</h1>
+        <a href="/" class="btn btn-info">Login</a>
+    </nav>
+
     <div>
         <form action="/new/register" method="post" class="col-4 p-4 mx-auto">
-            <h2 class="text-primary">Register</h2>
+            <h2 class="text-center">Register</h2>
             {% with messages = get_flashed_messages(category_filter=['register']) %}
             {% if messages %}
-            <div class="alert alert-danger" role="alert">
-                <strong>alert</strong>
-                {% for message in messages %}
-                <p>{{message}}</p>
-                {% endfor %}
-            </div>
+                <div class="alert alert-danger" role="alert">
+                    <strong>alert</strong>
+                    {% for message in messages %}
+                    <p>{{message}}</p>
+                    {% endfor %}
+                </div>
             {% endif %}
             {% endwith %}
             <div class="form-group">
@@ -40,7 +46,7 @@
                 <label for="confirm">Confirm Password:</label>
                 <input type="password" name="confirm_password" class="form-control">
             </div>
-            <input type="submit" value="Register" class="btn btn-primary">
+            <input type="submit" value="Register" class="btn btn-warning float-right">
             <p><a href="/">Click here to log in</a></p>
         </form>
     </div>
