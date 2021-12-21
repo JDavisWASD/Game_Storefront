@@ -96,22 +96,23 @@ class User:
         return is_valid
 
     @staticmethod
-    def validate_update(form):
+    def validate_update(data):
         is_valid = True
+        user = User.get_by_email(data)
 
-        if form['username'] == '':
+        if data['username'] == '':
             flash('A username is required.', 'user')
             is_valid = False
-        if len(form['username']) < 3:
+        if len(data['username']) < 3:
             flash('Usernames must be at least 3 characters.', 'user')
             is_valid = False
-        if form['email'] == '':
+        if data['email'] == '':
             flash('An email is required.', 'user')
             is_valid = False
-        if not EMAIL_REGEX.match(form['email']):
+        if not EMAIL_REGEX.match(data['email']):
             flash('Invalid email.', 'user')
             is_valid = False
-        if User.get_by_email(form):
+        if user and data['user_id'] != user.id:
             flash('A user with that email already exists.', 'user')
             is_valid = False
 
