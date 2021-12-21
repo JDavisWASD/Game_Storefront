@@ -42,7 +42,7 @@
                 <!-- Game card -->
                 <div class="col-24">
                     <div class="card">
-                        <img src="{{ game.image_source }}" class="card-img-top" alt="{{ game.name }}">  <!-- Image placeholder -->
+                        <img src="{{ url_for('static', filename = 'images/' + game.image_source) }}" class="card-img-top" alt="{{ game.name }}">  <!-- Image placeholder -->
                     </div>
                 </div>
         </div>
