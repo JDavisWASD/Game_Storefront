@@ -63,7 +63,12 @@ def dashboard():
         'status': "collection"
     }
 
-    return render_template('dashboard.html', self_user = user.User.get_by_id(user_data), all_games = game.Game.get_all(), all_users = user.User.get_all(), all_friends = friend.Friend.get_all_by_user(user_data), wishlist_games = users_game.UsersGame.get_users_games_by_status(wishlist_data), collection_games = users_game.UsersGame.get_users_games_by_status(collection_data))
+    return render_template('dashboard.html', \
+        self_user = user.User.get_by_id(user_data), \
+        all_games = game.Game.get_all(), all_users = user.User.get_all(), \
+        all_friends = friend.Friend.get_all_by_user(user_data), \
+        wishlist_games = users_game.UsersGame.get_users_games_by_status(wishlist_data), \
+        collection_games = users_game.UsersGame.get_users_games_by_status(collection_data))
 
 # --- Processes user's request to add another user to friends list ---
 @app.route('/add/friend/<int:friend_id>')
@@ -86,19 +91,6 @@ def remove_friend(friend_id):
     }
 
     friend.Friend.delete(data)
-
-    return redirect('/dashboard')
-
-# --- Processes user's request to add game to collection or wishlist ---
-@app.route('/add/<status>/game/<int:game_id>')
-def add_to_game_category(status, game_id):
-    data = {
-        'user_id': session['user_id'],
-        'game_id': game_id,
-        'status': status
-    }
-
-    users_game.UsersGame.save(data)
 
     return redirect('/dashboard')
 
@@ -126,13 +118,14 @@ def edit_user():
 
 @app.route('/update_user', methods = ['POST'])
 def update_user():
-    if not user.User.validate_update(request.form):
-        return redirect('/edit')
     data = {
         'user_id': session['user_id'],
         'username': request.form['username'],
         'email': request.form['email']
     }
+    if not user.User.validate_update(data):
+        return redirect('/edit')
+
     user.User.update(data)
     return redirect('/dashboard')
 
