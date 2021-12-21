@@ -24,7 +24,7 @@
 
     <!-- 'All Games' section -->
     <h3>All Games</h3>
-    <div class="row flex-nowrap m-3">
+    <div class="row flex-nowrap m-3 overflow-auto">
         <!-- row-cols-1 row-cols-md-3 g-4 border border-dark -->
         {% for game in all_games %}
             <!-- Game card -->
@@ -41,7 +41,7 @@
 
     <!-- 'All Users' section [HS] -->
     <h3>All Users</h3>
-    <div class="row flex-nowrap mx-auto" style="background-color:darkkhaki">
+    <div class="row flex-nowrap mx-auto overflow-auto" style="background-color:darkkhaki">
         {% for user in all_users %}
             <!-- User card -->
             <div class="col-1">
