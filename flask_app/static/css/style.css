@@ -17,7 +17,7 @@
     height: 164px;
 }
 
-.user-icon {
+.user-icon, .game-icon {
     width: 4rem;
 }
 
