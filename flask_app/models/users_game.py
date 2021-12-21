@@ -55,6 +55,15 @@ class UsersGame:
 
         return users    # returns a list called 'users'
 
+    @classmethod
+    def get_user_game_status(cls,data):
+        query ='SELECT * FROM users_games WHERE game_id = %(game_id)s AND user_id = %(user_id)s;'
+        results = connectToMySQL(cls.DATABASE).query_db(query, data)
+        status = []
+        if len(results) == 0: status=[] 
+        else: status.append((results[0]))
+        return status
+
 #Modify functions --------------------------------------------------------------
     @classmethod
     def save(cls, data):
