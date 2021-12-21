@@ -14,7 +14,7 @@
         <h1 class="text-center">Game Platform</h1>
         <h2>Welcome, {{user.username}}</h2>
         <div class="d-flex col-4 justify-content-around">
-            <a href="/dashboard">Home</a>
+            <a href="/dashboard" class="btn btn-info">Home</a>
             <a href="/edit" class="btn btn-info">Edit profile</a>
             <a href="/logout" class="btn btn-info">Logout</a>
         </div>
@@ -22,77 +22,100 @@
 
     <!-- 'Featured Games' section [Optional] -->
 
-    <!-- 'All Games' section [PL] -->
-    <div>
+    <!-- 'All Games' section -->
+    <h3>All Games</h3>
+    <div class="row flex-nowrap m-3">
+        <!-- row-cols-1 row-cols-md-3 g-4 border border-dark -->
         {% for game in all_games %}
             <!-- Game card -->
-            <div>
-                <p>[ image placeholder ]</p>
-                <p><a href="/view/{{ game.id }}">{{ game.name }}</a></p>
+            <div class="col-2">
+                <div class="card">
+                    <img src="../static/images/forza-horizon-5.jpeg" class="card-img-top" alt="Forza Horizon 5">  <!-- Image placeholder -->
+                    <div class="card-body">
+                        <h5 class="card-title"><a href="/view/{{ game.id }}">{{ game.name }}</a></h5>
+                    </div>
+                </div>
             </div>
         {% endfor %}
     </div>
 
     <!-- 'All Users' section [HS] -->
-    <div class="col-2 mx-auto" style="background-color:darkkhaki">
-        <h2>Users:</h2>
-        {% for other_user in all_users %}
+    <h3>All Users</h3>
+    <div class="row flex-nowrap mx-auto" style="background-color:darkkhaki">
+        {% for user in all_users %}
             <!-- User card -->
-            <div>
-                <img src="../static/images/user-circle.png" alt="{{ other_user.username }}'s user icon">
-                <h4>{{ other_user.username }}</h4>
-                {% if other_user.id != user.id %}    {# makes sure we cannot add ourselves to friends list #}
-                    <a href="/add/friend/{{ other_user.id }}">Add</a>
-                {% endif %}
-            </div>
-        {% endfor %}
-    </div>
-    <!-- 'Collection' section [HS] -->
-    <div>
-        {% for game_owned in collection_games %}
-            <div>   <!-- row for each game in collections -->
-                <div>   <!-- container to hold image and game title -->
-                    <!-- image placeholder -->
-                    {{ game_owned.name }}</p>
-                </div>
-                <!-- container for view/remove buttons -->
-                <div>
-                    <!-- 'view' link is a placeholder, may need to change later-->
-                    <button><a href="/view/game/{{ game_owned.id }}">View</a></button>
-                    <button><a href="/remove/collection/game/{{ game_owned.id }}">Remove</a></button>
+            <div class="col-1">
+                <div class="card p-1">
+                    <img src="../static/images/user-circle.png" class="card-img-top figure-img" alt="{{ user.username }}'s user icon">
+                    <div class="card-body">
+                        <h5 class="card-title text-center">{{ user.username }}</h5>
+                        {% if user.id != self_user.id %}    {# makes sure we cannot add ourselves to friends list #}
+                            <a href="/add/friend/{{ user.id }}">Add</a>
+                        {% endif %}
+                    </div>
                 </div>
             </div>
         {% endfor %}
     </div>
 
-    <!-- 'Wishlist' section [HS] -->
-    <div>
-        {% for game_wanted in wishlist_games %}
-            <div>   <!-- row for each game in wishlist -->
-                <div>   <!-- container to hold image and game title -->
-                    <!-- image placeholder -->
-                    <p>{{ game_wanted.name }}</p>
-                </div>
-                <!-- container for view/remove buttons -->
-                <div>
-                    <!-- 'view' link is a placeholder, may need to change later-->
-                    <button><a href="/view/game/{{ game_wanted.id }}">View</a></button>
-                    <button><a href="/remove/collection/game/{{ game_wanted.id }}">Remove</a></button>
-                </div>
+    <!-- Overall container for collection/wishlist + friends sections -->
+    <div class="d-flex flex-row bg-white m-3">
+        <!-- Overall container for collection/wishlist sections -->
+        <div class="col">
+            <!-- 'Collection' section [HS] -->
+            <div class="border border-dark">
+                <h3>My Collection</h3>
+                {% for game_owned in collection_games %}
+                    <div>   <!-- row for each game in collections -->
+                        <div>   <!-- container to hold image and game title -->
+                            <!-- image placeholder -->
+                            {{ game_owned.name }}</p>
+                        </div>
+                        <!-- container for view/remove buttons -->
+                        <div>
+                            <!-- 'view' link is a placeholder, may need to change later-->
+                            <button><a href="/view/game/{{ game_owned.id }}">View</a></button>
+                            <button><a href="/remove/collection/game/{{ game_owned.id }}">Remove</a></button>
+                        </div>
+                    </div>
+                {% endfor %}
             </div>
-        {% endfor %}
+        
+            <!-- 'Wishlist' section [HS] -->
+            <div class="border border-dark">
+                <h3>My Wishlist</h3>
+                {% for game_wanted in wishlist_games %}
+                    <div>   <!-- row for each game in wishlist -->
+                        <div>   <!-- container to hold image and game title -->
+                            <!-- image placeholder -->
+                            <p>{{ game_wanted.name }}</p>
+                        </div>
+                        <!-- container for view/remove buttons -->
+                        <div>
+                            <!-- 'view' link is a placeholder, may need to change later-->
+                            <button><a href="/view/game/{{ game_wanted.id }}">View</a></button>
+                            <button><a href="/remove/collection/game/{{ game_wanted.id }}">Remove</a></button>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <!-- 'Friends' section [HS] -->
+        <div class="border border-dark col">
+            <h3>Friends</h3>
+            {% for friend in all_friends %}
+                <div> <!-- row for each user in friends list -->
+                    <img src="../static/images/user-circle.png" alt=" {{ friend.username }}'s user icon">
+                    <p>{{ friend.username }}</p>
+                </div>
+                <button><a href="/remove/friend/{{ friend.id }}"></a></button>
+            {% endfor %}
+        </div>
+
     </div>
 
-    <!-- 'Friends' section [HS] -->
-    <div>
-        {% for friend in all_friends %}
-            <div> <!-- row for each user in friends list -->
-                <img src="../static/images/user-circle.png" alt=" {{ friend.username }}'s user icon">
-                <p>{{ friend.username }}</p>
-            </div>
-            <button><a href="/remove/friend/{{ friend.id }}"></a></button>
-        {% endfor %}
-    </div>
+
 </body>
 
 </html>
