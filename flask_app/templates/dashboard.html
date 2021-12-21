@@ -69,7 +69,7 @@
                     <div>   <!-- row for each game in collections -->
                         <div>   <!-- container to hold image and game title -->
                             <!-- image placeholder -->
-                            {{ game_owned.name }}</p>
+                            <p>{{ game_owned.name }}</p>
                         </div>
                         <!-- container for view/remove buttons -->
                         <div>
@@ -94,7 +94,7 @@
                         <div>
                             <!-- 'view' link is a placeholder, may need to change later-->
                             <button><a href="/view/game/{{ game_wanted.id }}">View</a></button>
-                            <button><a href="/remove/collection/game/{{ game_wanted.id }}">Remove</a></button>
+                            <button><a href="/remove/wishlist/game/{{ game_wanted.id }}">Remove</a></button>
                         </div>
                     </div>
                 {% endfor %}
@@ -109,7 +109,7 @@
                     <img src="../static/images/user-circle.png" alt=" {{ friend.username }}'s user icon">
                     <p>{{ friend.username }}</p>
                 </div>
-                <button><a href="/remove/friend/{{ friend.id }}"></a></button>
+                <button><a href="/remove/friend/{{ friend.id }}">Remove</a></button>
             {% endfor %}
         </div>
 

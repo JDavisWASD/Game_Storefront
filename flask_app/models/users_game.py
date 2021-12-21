@@ -27,6 +27,7 @@ class UsersGame:
                 'genre': row['genre'],
                 'release_date': row['release_date'],
                 'price': row['price'],
+                'image_source': row['image_source'],
                 'description': row['description'],
                 'created_at': row['games.created_at'],
                 'updated_at': row['games.updated_at']
