@@ -94,19 +94,6 @@ def remove_friend(friend_id):
 
     return redirect('/dashboard')
 
-# --- Processes user's request to add game to collection or wishlist ---
-@app.route('/add/<status>/game/<int:game_id>')
-def add_to_game_category(status, game_id):
-    data = {
-        'user_id': session['user_id'],
-        'game_id': game_id,
-        'status': status
-    }
-
-    users_game.UsersGame.save(data)
-
-    return redirect('/dashboard')
-
 # --- Processes user's request to remove game from collection or wishlist ---
 @app.route('/remove/<status>/game/<int:game_id>')
 def remove_from_game_category(status, game_id):
