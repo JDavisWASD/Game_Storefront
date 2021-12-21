@@ -16,18 +16,19 @@ class UsersGame:
 #Get functions -----------------------------------------------------------------
     @classmethod
     def get_users_games_by_status(cls, data):
-        query = 'SELECT * FROM users_games JOIN games on game_id = games.id ' \
+        query = 'SELECT * FROM users_games JOIN games ON game_id = games.id ' \
             'WHERE user_id = %(user_id)s AND status = %(status)s;'
         results = connectToMySQL(cls.DATABASE).query_db(query, data)
         games = []
         for row in results:
             game_data = {
-                'id': row['games.id'],
+                'id': row['game_id'],
                 'name': row['name'],
                 'genre': row['genre'],
                 'release_date': row['release_date'],
                 'price': row['price'],
-                'description': row['decription'],
+                'image_source': row['image_source'],
+                'description': row['description'],
                 'created_at': row['games.created_at'],
                 'updated_at': row['games.updated_at']
             }
@@ -37,13 +38,13 @@ class UsersGame:
 
     @classmethod
     def get_users_by_game(cls, data):
-        query = 'SELECT * FROM users_games JOIN users on user_id = users.id ' \
+        query = 'SELECT * FROM users_games JOIN users ON user_id = users.id ' \
             'WHERE game_id = %(game_id)s;'
         results = connectToMySQL(cls.DATABASE).query_db(query, data)
         users = []
         for row in results:
             user_data = {
-                'id': row['users.id'],
+                'id': row['users_id'],
                 'username': row['username'],
                 'email': row['email'],
                 'password': row['password'],
