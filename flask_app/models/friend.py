@@ -20,7 +20,7 @@ class Friend:
         friends = []
         for row in results:
             user_data = {
-                'id': row['users.id'],
+                'id': row['friend_id'],
                 'username': row['username'],
                 'email': row['email'],
                 'password': row['password'],
@@ -51,7 +51,7 @@ class Friend:
         friends = []
         for row in results:
             user_data = {
-                'id': row['users.id'],
+                'id': row['friend_id'],
                 'username': row['username'],
                 'email': row['email'],
                 'password': row['password'],
