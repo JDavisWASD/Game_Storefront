@@ -13,12 +13,14 @@
 
 <body style="background-color:lightgray">
     <nav class="d-flex justify-content-between align-items-center col-12 bg-faded-purple">
-        <h1 class="text-center">Game Platform</h1>
-        <h2>Welcome, {{self_user.username}}</h2>
-        <div class="d-flex col-4 justify-content-around">
-            <a href="/dashboard" class="btn btn-info">Home</a>
-            <a href="/edit" class="btn btn-info">Edit profile</a>
+        <div class="d-flex justify-content-around align-items-center">
+            <h1>Game Platform</h1>
+            <a href="/dashboard" class="btn btn-info mx-2">Home</a>
             <a href="/logout" class="btn btn-info">Logout</a>
+        </div>
+        <div class="d-flex justify-content-around align-items-center">
+            <h3><a href="/edit" style="color:black">{{ self_user.username }}</a></h3>
+            <img src="../static/images/user-circle.png" alt="user icon of {{ self_user.username }}" class="user-icon mx-2">
         </div>
     </nav>
 
