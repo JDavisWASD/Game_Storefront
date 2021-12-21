@@ -16,7 +16,7 @@ class UsersGame:
 #Get functions -----------------------------------------------------------------
     @classmethod
     def get_users_games_by_status(cls, data):
-        query = 'SELECT * FROM users_games JOIN games on game_id = games.id ' \
+        query = 'SELECT * FROM users_games JOIN games ON game_id = games.id ' \
             'WHERE user_id = %(user_id)s AND status = %(status)s;'
         results = connectToMySQL(cls.DATABASE).query_db(query, data)
         games = []
@@ -38,7 +38,7 @@ class UsersGame:
 
     @classmethod
     def get_users_by_game(cls, data):
-        query = 'SELECT * FROM users_games JOIN users on user_id = users.id ' \
+        query = 'SELECT * FROM users_games JOIN users ON user_id = users.id ' \
             'WHERE game_id = %(game_id)s;'
         results = connectToMySQL(cls.DATABASE).query_db(query, data)
         users = []
