@@ -56,8 +56,8 @@ class User:
 
     @classmethod
     def update(cls, data):
-        query = 'UPDATE users SET username = %(username)s, updated_at = NOW() '\
-            'WHERE id = %(user_id)s;'
+        query = 'UPDATE users SET username = %(username)s, email = %(email)s, '\
+            'updated_at = NOW() WHERE id = %(user_id)s;'
         connectToMySQL(cls.DATABASE).query_db(query, data)
 
 #Helper functions --------------------------------------------------------------
@@ -66,31 +66,54 @@ class User:
         is_valid = True
 
         if form['username'] == '':
-            flash('A username is required.')
+            flash('A username is required.', 'register')
             is_valid = False
         if len(form['username']) < 3:
-            flash('Usernames must be at least 3 characters.')
+            flash('Usernames must be at least 3 characters.', 'register')
             is_valid = False
         if form['email'] == '':
-            flash('An email is required.')
+            flash('An email is required.', 'register')
             is_valid = False
         if not EMAIL_REGEX.match(form['email']):
-            flash('Invalid email.')
+            flash('Invalid email.', 'register')
             is_valid = False
         if User.get_by_email(form):
-            flash('A user with that email already exists.')
+            flash('A user with that email already exists.', 'register')
             is_valid = False
         if form['password'] == '':
-            flash('A password is required.')
+            flash('A password is required.', 'register')
             is_valid = False
         if len(form['password']) < 8:
-            flash('Passwords must be at least 8 characters.')
+            flash('Passwords must be at least 8 characters.', 'register')
             is_valid = False
         if form['confirm_password'] == '':
-            flash('Please confirm your password.')
+            flash('Please confirm your password.', 'register')
             is_valid = False
         if form['password'] != form['confirm_password']:
-            flash('Passwords don\'t match.')
+            flash('Passwords don\'t match.', 'register')
+            is_valid = False
+
+        return is_valid
+
+    @staticmethod
+    def validate_update(data):
+        is_valid = True
+        user = User.get_by_email(data)
+
+        if data['username'] == '':
+            flash('A username is required.', 'user')
+            is_valid = False
+        if len(data['username']) < 3:
+            flash('Usernames must be at least 3 characters.', 'user')
+            is_valid = False
+        if data['email'] == '':
+            flash('An email is required.', 'user')
+            is_valid = False
+        if not EMAIL_REGEX.match(data['email']):
+            flash('Invalid email.', 'user')
+            is_valid = False
+        if user and data['user_id'] != user.id:
+            flash('A user with that email already exists.', 'user')
             is_valid = False
 
         return is_valid

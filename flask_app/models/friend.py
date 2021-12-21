@@ -20,7 +20,7 @@ class Friend:
         friends = []
         for row in results:
             user_data = {
-                'id': row['users.id'],
+                'id': row['id'],
                 'username': row['username'],
                 'email': row['email'],
                 'password': row['password'],
@@ -51,7 +51,7 @@ class Friend:
         friends = []
         for row in results:
             user_data = {
-                'id': row['users.id'],
+                'id': row['friend_id'],
                 'username': row['username'],
                 'email': row['email'],
                 'password': row['password'],
@@ -67,7 +67,7 @@ class Friend:
     def save(cls, data):
         query = 'INSERT INTO friends (user_id, friend_id, created_at, ' \
             'updated_at) VALUES (%(user_id)s, %(friend_id)s, NOW(), NOW());'
-        return connectToMySQL(cls.DATABASE).query_db(query, data)
+        connectToMySQL(cls.DATABASE).query_db(query, data)
 
     @classmethod
     def delete(cls, data):

@@ -9,25 +9,26 @@ class UsersGame:
         self.id = data['id']
         self.user_id = data['user_id']
         self.game_id = data['game_id']
-        self.status = data['status']    #'owned' or 'wishlist' only
+        self.status = data['status']    #'collection' or 'wishlist' only
         self.created_at = data['created_at']
         self.updated_at = data['updated_at']
 
 #Get functions -----------------------------------------------------------------
     @classmethod
     def get_users_games_by_status(cls, data):
-        query = 'SELECT * FROM users_games JOIN games on game_id = games.id ' \
+        query = 'SELECT * FROM users_games JOIN games ON game_id = games.id ' \
             'WHERE user_id = %(user_id)s AND status = %(status)s;'
         results = connectToMySQL(cls.DATABASE).query_db(query, data)
         games = []
         for row in results:
             game_data = {
-                'id': row['games.id'],
+                'id': row['game_id'],
                 'name': row['name'],
                 'genre': row['genre'],
                 'release_date': row['release_date'],
                 'price': row['price'],
-                'description': row['decription'],
+                'image_source': row['image_source'],
+                'description': row['description'],
                 'created_at': row['games.created_at'],
                 'updated_at': row['games.updated_at']
             }
@@ -37,13 +38,13 @@ class UsersGame:
 
     @classmethod
     def get_users_by_game(cls, data):
-        query = 'SELECT * FROM users_games JOIN users on user_id = users.id ' \
+        query = 'SELECT * FROM users_games JOIN users ON user_id = users.id ' \
             'WHERE game_id = %(game_id)s;'
         results = connectToMySQL(cls.DATABASE).query_db(query, data)
         users = []
         for row in results:
             user_data = {
-                'id': row['users.id'],
+                'id': row['users_id'],
                 'username': row['username'],
                 'email': row['email'],
                 'password': row['password'],
@@ -66,21 +67,21 @@ class UsersGame:
 #Modify functions --------------------------------------------------------------
     @classmethod
     def save(cls, data):
-        if data['status'].lower() != 'owned' and \
+        if data['status'].lower() != 'collection' and \
                 data['status'].lower() != 'wishlist':
-            print('Error: Status must be "owned" or "wishlist".')
+            print('Error: Status must be "collection" or "wishlist".')
             return False
 
         query = 'INSERT INTO users_games (user_id, game_id, status, ' \
             'created_at, updated_at) VALUES (%(user_id)s, %(game_id)s, ' \
             '%(status)s, NOW(), NOW());'
-        return connectToMySQL(cls.DATABASE).query_db(query, data)
+        connectToMySQL(cls.DATABASE).query_db(query, data)
 
     @classmethod
     def update(cls, data):
-        if data['status'].lower() != 'owned' and \
+        if data['status'].lower() != 'collection' and \
                 data['status'].lower() != 'wishlist':
-            print('Error: Status must be "owned" or "wishlist".')
+            print('Error: Status must be "collection" or "wishlist".')
             return False
 
         query = 'UPDATE users_games SET status = %(status)s, ' \

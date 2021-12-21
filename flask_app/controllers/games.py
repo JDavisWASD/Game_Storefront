@@ -2,6 +2,7 @@ from flask import redirect, render_template, session
 from flask_app import app
 from flask_app.models import friend, game, users_game, user
 
+
 @app.route('/view/game/<int:game_id>')
 def view_game(game_id):
     if 'user_id' not in session:

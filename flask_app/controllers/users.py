@@ -1,16 +1,53 @@
-from flask import render_template, redirect, session
+from flask import flash, redirect, render_template, request, session
 from flask_app import app
 from flask_app.models import user, game, friend, users_game
+from flask_bcrypt import Bcrypt
+bcrypt = Bcrypt(app)
 
+# --- Landing page - includes login ---
+@app.route('/')
+def index():
+    return render_template('index.html')
+
+# --- Register page ---
+@app.route('/new')
+def registeraccount():
+    return render_template('register.html')
+
+# --- Processes user input to create a new user
+@app.route('/new/register',methods=['POST'])
+def register():
+    if not user.User.validate_new_user(request.form):
+        return redirect('/new')
+    data ={ 
+        "username": request.form['username'],
+        "email": request.form['email'],
+        "password": bcrypt.generate_password_hash(request.form['password'])
+    }
+    id = user.User.save(data)
+    session['user_id'] = id
+
+    return redirect('/dashboard')
+
+# --- Processes login info ---
+@app.route('/login',methods=['POST'])
+def login():
+    found_user = user.User.get_by_email(request.form)
+
+    if not found_user:
+        flash("Invalid Email","login")
+        return redirect('/')
+    if not bcrypt.check_password_hash(found_user.password, request.form['password']):
+        flash("Invalid Password","login")
+        return redirect('/')
+    session['user_id'] = found_user.id
+    return redirect('/dashboard')
 
 # --- Dashboard ---
 @app.route('/dashboard')
 def dashboard():
-    # display all games stored in database [PL]
-        # from list of all games: can add/remove games to/from user's collection [HS]
-        # from list of all games: can add/remove games to/from user's wishlist [HS]
-
-    # display all games in user's wishlist and collection - via 'wishlist_games' and 'collection_games' [HS]
+    if 'user_id' not in session:
+        return redirect('/')
 
     user_data = {
         'user_id': session['user_id']
@@ -26,17 +63,15 @@ def dashboard():
         'status': "collection"
     }
 
-    # display all users - via 'all_users' [HS]
-        # from list of all users: can add others to user's friend list - via 'add_friend' route
-
-    # friends list
-        # display all friends - via 'all_friends' [HS]
-        # can remove others from user's friend list - via 'remove_friend' route [HS]
-
-    return render_template('dashboard.html', all_users = user.User.get_all(), all_friends = friend.Friend.get_all_by_user(user_data), wishlist_games = users_game.UsersGame.get_users_games_by_status(wishlist_data), collection_games = users_game.UsersGame.get_users_games_by_status(collection_data))
+    return render_template('dashboard.html', \
+        self_user = user.User.get_by_id(user_data), \
+        all_games = game.Game.get_all(), all_users = user.User.get_all(), \
+        all_friends = friend.Friend.get_all_by_user(user_data), \
+        wishlist_games = users_game.UsersGame.get_users_games_by_status(wishlist_data), \
+        collection_games = users_game.UsersGame.get_users_games_by_status(collection_data))
 
 # --- Processes user's request to add another user to friends list ---
-@app.route('add/friend/<int:friend_id>')
+@app.route('/add/friend/<int:friend_id>')
 def add_friend(friend_id):
     data = {
         'user_id': session['user_id'],
@@ -47,32 +82,20 @@ def add_friend(friend_id):
 
     return redirect('/dashboard')
 
-# --- Processes user's request to add another user to friends list UPDATED BY SEAN, was missing function and return---
+# --- Processes user's request to add another user to friends list ---
+@app.route('/remove/friend/<int:friend_id>')
 def remove_friend(friend_id):
     data = {
         'user_id': session['user_id'],
         'friend_id': friend_id
     }
 
-    friend.Friend.save(data)
-
-    return redirect('/dashboard')
-
-# --- Processes user's request to add game to collection or wishlist ---
-@app.route('add/<str:status>/game/<int:game_id>')
-def add_to_game_category(status, game_id):
-    data = {
-        'user_id': session['user_id'],
-        'game_id': game_id,
-        'status': status
-    }
-
-    users_game.UsersGame.save(data)
+    friend.Friend.delete(data)
 
     return redirect('/dashboard')
 
 # --- Processes user's request to remove game from collection or wishlist ---
-@app.route('remove/<str:status>/game/<int:game_id>')
+@app.route('/remove/<status>/game/<int:game_id>')
 def remove_from_game_category(status, game_id):
     data = {
         'user_id': session['user_id'],
@@ -81,18 +104,32 @@ def remove_from_game_category(status, game_id):
     }
 
     users_game.UsersGame.delete(data)
- 
+
     return redirect('/dashboard')
 
-# --- Processes user's request to view specific game ADDED by SEAN---
-@app.route('/view/<str:status>/game/<int:game_id>')
-def show_game(status, game_id)
-    data ={
-        'user_id' : session['user_id'],
-        'game_id' : game_id,
-        'status' : status
+# --- Edit account settings page
+@app.route('/edit')
+def edit_user():
+    if 'user_id' not in session:
+        return redirect('/')
+
+    data = {'user_id': session['user_id']}
+    return render_template('edit.html', user = user.User.get_by_id(data))
+
+@app.route('/update_user', methods = ['POST'])
+def update_user():
+    data = {
+        'user_id': session['user_id'],
+        'username': request.form['username'],
+        'email': request.form['email']
     }
+    if not user.User.validate_update(data):
+        return redirect('/edit')
 
-    game.get_by_id(data)
+    user.User.update(data)
+    return redirect('/dashboard')
 
-    return render_template('showgame.html')
+@app.route('/logout')
+def logout():
+    session.pop('user_id')
+    return redirect('/')
