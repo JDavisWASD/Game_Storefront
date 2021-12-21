@@ -81,7 +81,7 @@ def remove_from_game_category(status, game_id):
     }
 
     users_game.UsersGame.delete(data)
-
+ 
     return redirect('/dashboard')
 
 # --- Processes user's request to view specific game ADDED by SEAN---
