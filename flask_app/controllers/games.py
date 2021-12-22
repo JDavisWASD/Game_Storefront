@@ -13,8 +13,12 @@ def view_game(game_id):
         'game_id': game_id,
         'status': 'collection'
     }
-    wishlist = collection
-    wishlist['status'] = 'wishlist'
+
+    wishlist = {
+        'user_id': session['user_id'],
+        'game_id': game_id,
+        'status': 'wishlist'
+    }
 
     data ={
         'user_id': session['user_id']

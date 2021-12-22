@@ -35,6 +35,15 @@ class User:
         return False
 
     @classmethod
+    def get_by_username(cls, data):
+        query = 'SELECT * FROM users WHERE username = %(username)s;'
+        result = connectToMySQL(cls.DATABASE).query_db(query, data)
+        if result:
+            return cls(result[0])
+
+        return False
+
+    @classmethod
     def get_all(cls):
         query = 'SELECT * FROM users;'
         results = connectToMySQL(cls.DATABASE).query_db(query)
@@ -67,6 +76,9 @@ class User:
 
         if form['username'] == '':
             flash('A username is required.', 'register')
+            is_valid = False
+        if User.get_by_username(form):
+            flash('A user with that username already exists.', 'register')
             is_valid = False
         if len(form['username']) < 3:
             flash('Usernames must be at least 3 characters.', 'register')
@@ -102,6 +114,9 @@ class User:
 
         if data['username'] == '':
             flash('A username is required.', 'user')
+            is_valid = False
+        if User.get_by_username(data):
+            flash('A user with that username already exists.', 'user')
             is_valid = False
         if len(data['username']) < 3:
             flash('Usernames must be at least 3 characters.', 'user')
