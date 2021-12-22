@@ -53,7 +53,9 @@
                 <div class="card-body mx-auto">
                     <h5 class="card-title text-center">{{ user.username }}</h5>
                     {% if user.id != self_user.id %}
-                        <a href="/add/friend/{{ user.id }}" class="btn btn-primary btn-group-vertical">Add</a>
+                        {% if user.id not in index or user.id != all_friends[index[user.id]].id %}
+                            <a href="/add/friend/{{ user.id }}" class="btn btn-primary btn-group-vertical">Add</a>
+                        {% endif %}
                     {% endif %}
                 </div>
             </div>

@@ -62,11 +62,18 @@ def dashboard():
         'user_id': session['user_id'],
         'status': "collection"
     }
+    users = user.User.get_all()
+    friends = friend.Friend.get_all_by_user(user_data)
+    friends_index = {}
+    for usr in users:
+        for i in range(len(friends)):
+            if usr.id == friends[i].id:
+                friends_index[usr.id] = i
 
     return render_template('dashboard.html', \
         self_user = user.User.get_by_id(user_data), \
-        all_games = game.Game.get_all(), all_users = user.User.get_all(), \
-        all_friends = friend.Friend.get_all_by_user(user_data), \
+        all_games = game.Game.get_all(), all_users = users, \
+        all_friends = friends, index = friends_index, \
         wishlist_games = users_game.UsersGame.get_users_games_by_status(wishlist_data), \
         collection_games = users_game.UsersGame.get_users_games_by_status(collection_data))
 
