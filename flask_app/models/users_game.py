@@ -6,7 +6,6 @@ class UsersGame:
     DATABASE = 'game_platform'
 
     def __init__(self, data):
-        self.id = data['id']
         self.user_id = data['user_id']
         self.game_id = data['game_id']
         self.status = data['status']    #'collection' or 'wishlist' only

@@ -10,14 +10,17 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
     <title>Game Platform</title>
 </head>
+
 <body style="background-color:lightgray">
     <nav class="d-flex justify-content-between align-items-center col-12 bg-faded-purple">
-        <h1 class="text-center">Game Platform</h1>
-        <h2>Welcome, {{self_user.username}}</h2>
-        <div class="d-flex col-4 justify-content-around">
-            <a href="/dashboard" class="btn btn-info">Home</a>
-            <a href="/edit" class="btn btn-info">Edit profile</a>
-            <a href="/logout" class="btn btn-info">Logout</a>
+        <div class="d-flex justify-content-around align-items-center">
+            <h1>Game Platform</h1>
+            <a href="/dashboard" class="btn btn-info mx-2">Home</a>
+            <a href="/logout" class="btn btn-info">Log Out</a>
+        </div>
+        <div class="d-flex justify-content-around align-items-center">
+            <h3><a href="/edit" style="color:black">{{ self_user.username }}</a></h3>
+            <img src="../static/images/user-circle.png" alt="user icon of {{ self_user.username }}" class="user-icon mx-2">
         </div>
     </nav>
 
@@ -31,7 +34,7 @@
             <!-- Game card -->
             <div class="col-2">
                 <div class="card">
-                    <img src="{{ game.image_source }}" class="card-img-top" alt="cover image of {{ game.name }}">
+                    <img src="{{ url_for('static', filename = 'images/' + game.image_source) }}" class="card-img-top" alt="cover image of {{ game.name }}">
                     <div class="card-body text-center">
                         <h5 class="card-title"><a href="/view/game/{{ game.id }}">{{ game.name }}</a></h5>
                     </div>
@@ -42,18 +45,18 @@
 
     <!-- 'All Users' section [HS] -->
     <h3 class="m-3">All Users</h3>
-    <div class="row flex-nowrap mx-3 px-2 py-3 overflow-auto bg-faded-grey border-radius-xs">
+    <div class="row flex-nowrap mx-3 px-2 py-3 overflow-auto bg-faded-grey border-2-grey border-radius-xs">
         {% for user in all_users %}
             <!-- User card -->
             <div class="card col-user-card user-card-fixed-ht mx-2">
                 <img src="../static/images/user-circle.png" class="card-img-top user-icon mx-auto mt-2" alt="{{ user.username }}'s user icon">
                 <div class="card-body mx-auto">
                     <h5 class="card-title text-center">{{ user.username }}</h5>
-                    {% for friend in all_friends %}     {# check if this user is already in our friends list #}
-                        {% if (user.id != friend.id) and (user.id != self_user.id) %}
-                            <button class="btn btn-primary btn-group-vertical"><a href="/add/friend/{{ user.id }}" class="text-white">Add</a></button>
+                    {% if user.id != self_user.id %}
+                        {% if user.id not in index or user.id != all_friends[index[user.id]].id %}
+                            <a href="/add/friend/{{ user.id }}" class="btn btn-primary btn-group-vertical">Add</a>
                         {% endif %}
-                    {% endfor %}
+                    {% endif %}
                 </div>
             </div>
         {% endfor %}
@@ -68,16 +71,15 @@
                 <h3>My Collection</h3>
                 <div class="border border-dark bg-faded-grey border-radius-xs overflow-auto">
                     {% for game_owned in collection_games %}
-                        <div>   <!-- row for each game in collections -->
-                            <div>   <!-- container to hold image and game title -->
-                                <!-- image placeholder -->
-                                {{ game_owned.name }}</p>
+                        <div class="d-flex justify-content-between align-items-center m-1">   <!-- row for each game in collections -->
+                            <div class="d-flex align-items-center">   <!-- container to hold image and game title -->
+                                <img src="{{ url_for('static', filename = 'images/' + game_owned.image_source) }}" class="game-icon mr-3" alt="cover image of {{ game_owned.name }}">
+                                <h5>{{ game_owned.name }}</h5>
                             </div>
                             <!-- container for view/remove buttons -->
                             <div>
-                                <!-- 'view' link is a placeholder, may need to change later-->
-                                <button><a href="/view/game/{{ game_owned.id }}">View</a></button>
-                                <button><a href="/remove/collection/game/{{ game_owned.id }}">Remove</a></button>
+                                <a href="/view/game/{{ game_owned.id }}" class="btn btn-success">View</a>
+                                <a href="/remove/collection/game/{{ game_owned.id }}" class="btn btn-danger">Remove</a>
                             </div>
                         </div>
                     {% endfor %}
@@ -87,18 +89,17 @@
             <!-- 'Wishlist' section [HS] -->
             <div>
                 <h3>My Wishlist</h3>
-                <div class="border border-dark bg-faded-grey overflow-auto">
+                <div class="border border-dark bg-faded-grey border-2-grey overflow-auto">
                     {% for game_wanted in wishlist_games %}
-                        <div>   <!-- row for each game in wishlist -->
-                            <div>   <!-- container to hold image and game title -->
-                                <!-- image placeholder -->
-                                <p>{{ game_wanted.name }}</p>
+                        <div class="d-flex justify-content-between align-items-center m-1">   <!-- row for each game in wishlist -->
+                            <div class="d-flex align-items-center">   <!-- container to hold image and game title -->
+                                <img src="{{ url_for('static', filename = 'images/' + game_wanted.image_source) }}" class="game-icon mr-3" alt="cover image of {{ game_wanted.name }}">
+                                <h5>{{ game_wanted.name }}</h5>
                             </div>
                             <!-- container for view/remove buttons -->
                             <div>
-                                <!-- 'view' link is a placeholder, may need to change later-->
-                                <button><a href="/view/game/{{ game_wanted.id }}">View</a></button>
-                                <button><a href="/remove/collection/game/{{ game_wanted.id }}">Remove</a></button>
+                                <a href="/view/game/{{ game_wanted.id }}" class="btn btn-success">View</a>
+                                <a href="/remove/collection/game/{{ game_wanted.id }}" class="btn btn-danger">Remove</a>
                             </div>
                         </div>
                     {% endfor %}
@@ -111,7 +112,7 @@
             <h3>My Friends</h3>
             <div class="p-3 border border-dark bg-faded-grey border-2-grey overflow-auto">
                 {% for friend in all_friends %}
-                    <div class="d-flex align-items-center justify-content-between bg-white border-radius-xs p-3"> <!-- row for each user in friends list -->
+                    <div class="d-flex align-items-center justify-content-between bg-white border-radius-xs p-3 m-1"> <!-- row for each user in friends list -->
                         <div class="d-flex align-items-center">
                             <img src="../static/images/user-circle.png" class="user-icon mr-3" alt=" {{ friend.username }}'s user icon">
                             <h5>{{ friend.username }}</h5>
@@ -121,10 +122,7 @@
                 {% endfor %}
             </div>
         </div>
-
     </div>
-
-
 </body>
 
 </html>
