@@ -10,25 +10,21 @@
     <link rel="stylesheet" href="/static/css/style.css">
     <title>Game Platform</title>
 </head>
-<body>
-    <!-- navbar -->
-    <nav class="d-flex justify-content-between align-items-center bg-dark">
-        <div class="text-warning">
+
+<body style="background-color:lightgray">
+    <nav class="d-flex justify-content-between align-items-center col-12 bg-faded-purple">
+        <div class="d-flex justify-content-around align-items-center">
             <h1>Game Platform</h1>
+            <a href="/dashboard" class="btn btn-info mx-2">Home</a>
+            <a href="/logout" class="btn btn-info">Log Out</a>
         </div>
-        <div class="col-4 d-flex justify-content-around align-items-center">
-            <div class="d-flex align-items-center">
-                <a href="/edit"><h5 class="text-center text-warning">{{ self_user.username }}</h5></a>
-                <div>
-                    <img src="{{ url_for('static', filename = 'images/user-circle.png') }}" alt="user icon of {{ self_user.username }}" class="user-icon">
-                </div>
-            </div>
-            <div class="col-5 d-flex align-items-end justify-content-around">
-                <div><a href="/dashboard" class="btn btn-primary">Home</a></div>
-                <div><a href="/logout" class="btn btn-info">Logout</a></div>
-            </div>
-        </div>   
+        <div class="d-flex justify-content-around align-items-center">
+            <h3><a href="/edit" style="color:black">{{ self_user.username }}</a></h3>
+            <img src="{{ url_for('static', filename = 'images/user-circle.png') }}" alt="user icon of {{ self_user.username }}"
+            class="user-icon mx-2">
+        </div>
     </nav>
+
     <!-- game card -->
     <div class="col-10 p-8 my-1 bg-dark text-light mx-auto d-flex justify-content-between border-radius-xs">
         <div>
