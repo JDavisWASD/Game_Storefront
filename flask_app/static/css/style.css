@@ -21,6 +21,10 @@
     width: 4rem;
 }
 
+.nav-user-icon {
+    width: 2.2rem
+}
+
 .bg-faded-purple {
     background-color: #8984BE;
 }
@@ -31,4 +35,19 @@
 
 .border-radius-xs {
     border-radius: 0.25rem;
+}
+
+.collect-wish-fixed-ht {
+    height: 350px;
+}
+
+.friends-fixed-ht {
+    height: 98%;
+}
+
+h3 {
+    margin-top: 0;
+    margin-bottom: 0 !important;
+    font-weight: 500;
+    line-height: 1.2;
 }
