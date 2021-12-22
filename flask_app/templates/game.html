@@ -7,117 +7,174 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
         integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="/static/css/style.css">
     <title>Game Platform</title>
 </head>
-
 <body>
     <!-- navbar -->
-    <nav class="d-flex justify-content-between align-items-center col-12 bg-faded-purple">
-        <div class="d-flex justify-content-around align-items-center">
+    <nav class="d-flex justify-content-between align-items-center bg-dark">
+        <div class="text-warning">
             <h1>Game Platform</h1>
-
-            <a href="/dashboard" class="btn btn-info mx-2">Home</a>
-            <a href="/logout" class="btn btn-info">Log Out</a>
         </div>
-        <div class="d-flex justify-content-around align-items-center">
-            <h3>{{ self_user.username|title }}</h3>
-            <img src="{{ url_for('static', filename = 'images/user-circle.png') }}" alt="user icon of {{ self_user.username }}"
-                class="user-icon mx-2">
-        </div>
-    </nav>
-    <!-- game body -->
-    <!-- price/add collection/add wishlist-->
-    <div class="container d-flex justify-content-between align-items-center btn-group-vertical">
-        <div class="row flex-nowrap m-3 overflow-auto">
-            <!-- Game card -->
-            <div class="col-24">
-                <div class="card">
-                    <img src="{{ url_for('static', filename = 'images/' + game.image_source) }}" class="card-img-top"
-                        alt="{{ game.name }}"> <!-- Image placeholder -->
+        <div class="col-4 d-flex justify-content-around align-items-center">
+            <div class="d-flex align-items-center">
+                <a href="/edit"><h5 class="text-center text-warning">{{ self_user.username }}</h5></a>
+                <div>
+                    <img src="{{ url_for('static', filename = 'images/user-circle.png') }}" alt="user icon of {{ self_user.username }}" class="user-icon">
                 </div>
             </div>
-        </div>
+            <div class="col-5 d-flex align-items-end justify-content-around">
+                <div><a href="/dashboard" class="btn btn-primary">Home</a></div>
+                <div><a href="/logout" class="btn btn-info">Logout</a></div>
+            </div>
+        </div>   
+    </nav>
+    <!-- game card -->
+    <div class="col-10 p-8 my-1 bg-dark text-light mx-auto d-flex justify-content-between border-radius-xs">
         <div>
-            <p class="">Price: {{ game.price }}</p>
-        </div>
-        <div>
-            {% if status_games|length == 0 %}
-                <!-- if array is empty -->
-                <button class="btn text-light">
-                    <a href="/add/collection/game/{{game.id}}">Add to your collection!</a>
-                </button>
-            {% else %}
-                <!-- if user wants to put wishlisted game in collection, update status from wishlist to collection-->
-                {% for c in status_games%}
-                    {% if (c.status != "collection") and (c.status == "wishlist") %}
-                        <!-- game is not in user's collection and is on wishlist -->
-                        <button class="btn text-light">
-                            <a href="/update/collection/game/{{game.id}}">Add to your collection!</a>
-                        </button>
-                    {% else %}
-                        <!-- user has game in collection-->
-                        <p>You own this game.</p>
-                    {% endif %}
-                {% endfor %}
-            {% endif %}
-        </div>
-        <div>
-            {% if status_games|length == 0 %}
-                <button class="btn text-light">
-                    <a href="/add/wishlist/game/{{game.id}}">Add to wishlist</a>
-                </button>
-            {% else %}
-                {% for c in status_games%}
-                    {% if (c.status == "wishlist") and (c.status != "collection") %}
-                        <button class="btn text-light">
-                            <a href="/remove/wishlist/game/{{game.id}}">Remove from Wishlist</a>
-                        </button>
-                    {% elif (c.status != "wishlist") and (c.status == "collection") %}
-                    {% else %}
-                        <button class="btn text-light">
-                            <a href="/add/wishlist/game/{{game.id}}">Add from Wishlist</a>
-                        </button>
-                    {% endif %}
-                {% endfor %}
-            {% endif %}
+            <h1 class="d-flex justify-content-center text-danger">{{ game.name }}</h1>
+            <div class="row flex-nowrap m-3 overflow-auto d-flex justify-content-around align-items-center">
+                <!-- game card container left -->
+                <div>
+                    <div class="card">
+                        <img src="{{ url_for('static', filename = 'images/' + game.image_source) }}" class="card-img-top" style="max-height: 350px;"
+                            alt="{{ game.name }}"> <!-- Image placeholder -->
+                    </div>
+                </div>
+                <!-- game card container right -->
+                <div class="d-flex justify-content-end my-4 btn-group-vertical">
+                    <h5 class="container d-flex justify-content-around align-items-center">Price: ${{ game.price }}</h5>
+                <!-- add collection/add wishlist container -->
+                    <div class="container d-flex align-items-center btn-group-vertical">
+                        <!-- add to collection -->
+                        <div>
+                            {% if status_games|length == 0 %}
+                                <!-- if array is empty -->
+                                <button class="btn text-light">
+                                    <a href="/add/collection/game/{{game.id}}">Add to your collection!</a>
+                                </button>
+                            {% else %}
+                                <!-- if user wants to put wishlisted game in collection, update status from wishlist to collection-->
+                                {% for c in status_games%}
+                                    {% if (c.status != "collection") and (c.status == "wishlist") %}
+                                        <!-- game is not in user's collection and is on wishlist -->
+                                        <button class="btn text-light">
+                                            <a href="/update/collection/game/{{game.id}}">Add to your collection!</a>
+                                        </button>
+                                    {% else %}
+                                        <!-- user has game in collection-->
+                                        <p>You own this game.</p>
+                                    {% endif %}
+                                {% endfor %}
+                            {% endif %}
+                        </div>
+                        <!-- add to wishlist -->
+                        <div>
+                            {% if status_games|length == 0 %}
+                                <button class="btn text-light">
+                                    <a href="/add/wishlist/game/{{game.id}}">Add to wishlist</a>
+                                </button>
+                            {% else %}
+                                {% for c in status_games%}
+                                    {% if (c.status == "wishlist") and (c.status != "collection") %}
+                                        <button class="btn text-light">
+                                            <a href="/remove/wishlist/game/{{game.id}}">Remove from Wishlist</a>
+                                        </button>
+                                    {% elif (c.status != "wishlist") and (c.status == "collection") %}
+                                    {% else %}
+                                        <button class="btn text-light">
+                                            <a href="/add/wishlist/game/{{game.id}}">Add from Wishlist</a>
+                                        </button>
+                                    {% endif %}
+                                {% endfor %}
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="d-flex justify-content-center btn-group-vertical">
+                        <table class="text-warning">
+                            <tbody>
+                                <tr>
+                                    {% if friends_collection|length == 0 %}
+                                        <th>0 friends own this game.</th>
+                                    {% else %}
+                                        <th>{{friends_collection|length}} friend(s) own this game.</th>
+                                    {% endif%}
+                                </tr>
+                                <tr>
+                                    <th class="d-flex justify-content-center">
+                                    {% if friends_collection|length == 0 %}
+                                    {% else %}
+                                        {% for f in friends_collection%}
+                                            <img src="{{ url_for('static', filename = 'images/user-circle.png')}}" alt="user icon of {{ f.username }}" class="friend-icon">
+                                        {% endfor %}
+                                    {% endif %}
+                                    </th>
+                                </tr>
+                                <tr class="text-secondary friend-text">
+                                    <th class="d-flex justify-content-center">
+                                    {% if friends_collection|length == 0 %}
+                                    {% else %}
+                                        {% for f in friends_collection%}
+                                            {{ f.username }}
+                                        {% endfor %}
+                                    {% endif %}
+                                    </th>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <table class="text-warning">
+                            <tbody>
+                                <tr>
+                                    {% if friends_wishlist|length == 0 %}
+                                        <th>0 friends want this game.</th>
+                                    {% else %}
+                                        <th>{{friends_wishlist|length}} friend(s) want this game.</th>
+                                    {% endif %}
+                                </tr>
+                                <tr class="d-flex justify-content-center">
+                                    <th>
+                                        {% if friends_wishlist|length == 0 %}
+                                        {% else %}
+                                            {% for f in friends_wishlist %}
+                                                <img src="{{ url_for('static', filename = 'images/user-circle.png')}}" alt="user icon of {{ self_user.username }}" class="friend-icon">
+                                            {% endfor %}
+                                        {% endif %}
+                                    </th>
+                                </tr>
+                                <tr class="text-secondary friend-text">
+                                    <th class="d-flex justify-content-center">
+                                        {% if friends_wishlist|length == 0 %}
+                                        {% else %}
+                                            {% for f in friends_wishlist %}
+                                                {{ f.username }}
+                                            {% endfor %}
+                                        {% endif %} 
+                                    </th>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <!-- game info -->
+            <table class="table table-hover text-center">
+                <tbody>
+                    <tr class="text-success">
+                        <th class="col-8">About</th>
+                        <th>Released Date</th>
+                        <th>Genre</th>
+                    </tr>
+                    <tr class="text-success">
+                        <th>{{ game.description }}</th>
+                        <th>{{ game.release_date.strftime('%B %d, %Y')  }}</th>
+                        <th>{{ game.genre }}</th>
+                    </tr>
+                </tbody>
+            </table>
         </div>
     </div>
-    <div class="col-6 p-8 my-4 bg-dark text-light mx-auto">
-        <h1 class="d-flex justify-content-center p-5 text-danger">{{ game.name }}</h1>
-        <table class="table table-hover text-center">
-            <tbody>
-                <tr class="text-success">
-                    <th class="col-8">About</th>
-                    <th>Released Date</th>
-                    <th>Genre</th>
-                </tr>
-                <tr class="text-success">
-                    <th>{{ game.description }}</th>
-                    <th>{{ game.release_date }}</th>
-                    <th>{{ game.genre }}</th>
-                </tr>
-            </tbody>
-        </table>
-    </div>
-    <div class="d-flex justify-content-around bg-dark">
-        <div class="bg-light">
-            {% for f in friends_collection %}
-                <h4> friend(s) own this.</h4>
-                <tr class="font-weight-bold">
-                    <td class="text-uppercase">{{f.first_name}}</td>
-                </tr>
-            {% endfor %}
-        </div>
-        <div>
-            {% for f in friends_wishlist %}
-                <h4> friend(s) own this.</h4>
-                <tr class="font-weight-bold">
-                    <td class="text-uppercase">{{f.first_name}}</td>
-                </tr>
-            {% endfor %}
-        </div>
-    </div>
+</body>
+</html>
 </body>
 
 </html>
