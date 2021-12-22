@@ -66,8 +66,8 @@ def dashboard():
     friends = friend.Friend.get_all_by_user(user_data)
     friends_index = {}
 
-    #Record the index of a person in friends list into a dictionary accessable by
-    #that persons user_id
+    #Record the index of a person in friends list into a dictionary accessable
+    #by that persons user_id
     for usr in users:
         for i in range(len(friends)):
             if usr.id == friends[i].id:
