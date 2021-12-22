@@ -32,8 +32,8 @@
             <form action="/update_user" method="POST">
                 {% with messages = get_flashed_messages(category_filter=['user']) %}
                 {% if messages %}
-                    <div class="alert" role="alert">
-                        <strong>alert</strong>
+                    <div class="alert alert-danger" role="alert">
+                        <strong>Error:</strong>
                         {% for message in messages %}
                         <p>{{message}}</p>
                         {% endfor %}
