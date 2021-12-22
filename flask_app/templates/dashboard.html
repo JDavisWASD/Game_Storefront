@@ -46,7 +46,7 @@
                     </div>
                 </div>
             </div>
-         {% endfor %}
+        {% endfor %}
         </div>
     </div>
 
@@ -54,21 +54,21 @@
     <div class="mx-3 mt-5 border-2-grey border-radius-xs bg-faded-grey">
         <h3 class="text-warning bg-dark p-2">All Users</h3>
         <div class="d-flex flex-nowrap px-2 py-3 overflow-auto bg-faded-grey">
-          {% for user in all_users %}
-              <!-- User card -->
-              <div class="card col-user-card user-card-fixed-ht mx-2">
-                  <img src="../static/images/user-circle.png" class="card-img-top user-icon mx-auto mt-2" alt="{{ user.username }}'s user icon">
-                  <div class="card-body mx-auto col">
-                      <h5 class="card-title text-center">{{ user.username }}</h5>
-                      {% if user.id != self_user.id %}
-                          {% if user.id not in index or user.id != all_friends[index[user.id]].id %}
-                              <p class="text-center"><a href="/add/friend/{{ user.id }}" class="btn btn-primary">Add</a></p>
-                          {% endif %}
-                      {% endif %}
+            {% for user in all_users %}
+                <!-- User card -->
+                <div class="card col-user-card user-card-fixed-ht mx-2">
+                    <img src="../static/images/user-circle.png" class="card-img-top user-icon mx-auto mt-2" alt="{{ user.username }}'s user icon">
+                    <div class="card-body mx-auto col">
+                        <h5 class="card-title text-center">{{ user.username }}</h5>
+                        {% if user.id != self_user.id %}
+                            {% if user.id not in index or user.id != all_friends[index[user.id]].id %}
+                                <p class="text-center"><a href="/add/friend/{{ user.id }}" class="btn btn-primary">Add</a></p>
+                            {% endif %}
+                        {% endif %}
 
-                  </div>
-              </div>
-          {% endfor %}
+                </div>
+            </div>
+        {% endfor %}
         </div>
     </div>
 
@@ -109,7 +109,7 @@
                             <!-- container for view/remove buttons -->
                             <div>
                                 <a href="/view/game/{{ game_wanted.id }}" class="btn btn-success text-white">View</a>
-                                <a href="/remove/collection/game/{{ game_wanted.id }}" class="btn btn-danger text-white">Remove</a>
+                                <a href="/remove/wishlist/game/{{ game_wanted.id }}" class="btn btn-danger text-white">Remove</a>
                             </div>
                         </div>
                     {% endfor %}
