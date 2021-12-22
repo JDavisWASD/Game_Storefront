@@ -5,7 +5,6 @@ class Friend:
     DATABASE = 'game_platform'
 
     def __init__(self, data):
-        self.id = data['id']
         self.user_id = data['user_id']
         self.friend_id = data['friend_id']
         self.created_at = data['created_at']

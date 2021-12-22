@@ -52,11 +52,9 @@
                 <img src="../static/images/user-circle.png" class="card-img-top user-icon mx-auto mt-2" alt="{{ user.username }}'s user icon">
                 <div class="card-body mx-auto">
                     <h5 class="card-title text-center">{{ user.username }}</h5>
-                    {% for friend in all_friends %}     {# check if this user is self or is already in our friends list #}
-                        {% if (user.id != friend.id) and (user.id != self_user.id) %}
-                            <button class="btn btn-primary btn-group-vertical"><a href="/add/friend/{{ user.id }}" class="text-white">Add</a></button>
-                        {% endif %}
-                    {% endfor %}
+                    {% if user.id != self_user.id %}
+                        <a href="/add/friend/{{ user.id }}" class="btn btn-primary btn-group-vertical">Add</a>
+                    {% endif %}
                 </div>
             </div>
         {% endfor %}
@@ -112,7 +110,7 @@
             <h3>My Friends</h3>
             <div class="p-3 border border-dark bg-faded-grey border-2-grey overflow-auto">
                 {% for friend in all_friends %}
-                    <div class="d-flex align-items-center justify-content-between bg-white border-radius-xs p-3"> <!-- row for each user in friends list -->
+                    <div class="d-flex align-items-center justify-content-between bg-white border-radius-xs p-3 m-1"> <!-- row for each user in friends list -->
                         <div class="d-flex align-items-center">
                             <img src="../static/images/user-circle.png" class="user-icon mr-3" alt=" {{ friend.username }}'s user icon">
                             <h5>{{ friend.username }}</h5>
@@ -122,10 +120,7 @@
                 {% endfor %}
             </div>
         </div>
-
     </div>
-
-
 </body>
 
 </html>
